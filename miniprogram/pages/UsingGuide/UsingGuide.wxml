@@ -1,0 +1,62 @@
+<!--miniprogram/pages/UsingGuide/UsingGuide.wxml-->
+<!--title: 推文大标题-->
+<!--stitle: 推文小标题，温馨提示-->
+<!--dingyi: 下定义样式 花一点-->
+<!--header1: 段小标题-->
+<!--header2: 段二级标题-->
+<!--header3: 段三级标题-->
+<!--zhuyi: 段中文字注意标识样式-->
+<!--content: 普通文字，可以搞成灰的-->
+<!--fengefu: 段分隔符-->
+<!--gif：图片，需居中-->
+<!--giftext：图片下方配的一小点说明文字，需居中-->
+<view class="headNavi">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+	<view class="cu-bar bg-blue">
+		<view class="action" bindtap="returnHome">
+			<text class="cuIcon-back text-white"></text>返回
+		</view>
+		<view class="content text-bold">
+			看板娘导览
+		</view>
+	</view>
+</view>
+
+<image src="../../images/whitebg.png" style="position:fixed;width:100%;height:100%;z-index:-1;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/1.png" style="width:100%;height:800rpx;" ></image>
+
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/1.gif" bindtap="Preview" data-index="1" style="margin-left:35%;width:30%;height:400rpx;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/text1.png" style="width:100%;height:40rpx;" ></image>
+
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/2.png" style="width:100%;height:180rpx;" ></image>
+
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/2.1.gif" bindtap="Preview" data-index="2" style="margin-left:35%;width:30%;height:400rpx;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/text2.png" style="width:100%;height:40rpx;" ></image>
+
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/3.png" style="width:100%;height:130rpx;" ></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/2.2.gif" bindtap="Preview" data-index="3" style="margin-left:35%;width:30%;height:400rpx;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/text3.png" style="width:100%;height:40rpx;" ></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/4.png" style="width:100%;height:120rpx;" ></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/2.3.gif" bindtap="Preview" data-index="4" style="margin-left:35%;width:30%;height:400rpx;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/text4.png" style="width:100%;height:40rpx;" ></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/5.png" style="width:100%;height:300rpx;" ></image>
+
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/3.0.gif" bindtap="Preview" data-index="5" style="margin-left:35%;width:30%;height:400rpx;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/text5.png" style="width:100%;height:40rpx;" ></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/6.png" style="width:100%;height:250rpx;" ></image>
+
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/3.1.gif"  bindtap="Preview" data-index="6"  style="margin-left:35%;width:30%;height:400rpx;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/text6.png" style="width:100%;height:40rpx;" ></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/7.png" style="width:100%;height:250rpx;" ></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/3.2.gif" bindtap="Preview" data-index="7"  style="margin-left:15%;width:30%;height:400rpx;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/3.2.1.gif" bindtap="Preview" data-index="8"  style="margin-left:10%;width:30%;height:400rpx;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/text7.png" style="width:100%;height:40rpx;" ></image>
+
+
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/8.png" style="width:100%;height:350rpx;" ></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/3.2.3.gif" bindtap="Preview" data-index="9"  style="margin-left:15%;width:30%;height:400rpx;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/3.2.2.gif" bindtap="Preview" data-index="10" style="margin-left:10%;width:30%;height:400rpx;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/text8.png" style="width:100%;height:40rpx;" ></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/9.png" style="width:100%;height:250rpx;" ></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/3.3.gif" bindtap="Preview" data-index="11"  style="margin-left:35%;width:30%;height:400rpx;"></image>
+<image src="cloud://wxice-saksi.7778-wxice-saksi-1302267479//UsingGuide/text9.png" style="width:100%;height:40rpx;" ></image>

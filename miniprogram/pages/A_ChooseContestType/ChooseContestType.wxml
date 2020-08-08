@@ -1,0 +1,73 @@
+<!--miniprogram/pages/ChooseContestType/ChooseContestType.wxml-->
+<view class="headNavi">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+	<view class="cu-bar bg-blue">
+		<view class="content text-bold">
+			发布赛事
+		</view>
+	</view>
+</view>
+
+<view class="box">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+	<view class="cu-bar bg-blue"></view>
+	<view class="cu-card case">
+		<view class="cu-item shadow">
+			<view class="cu-bar bg-white">
+				<view class="action sub-title">
+					<text class="text-xxl text-bold text-blue">请选择赛事创建类型模板</text>
+					<text class="bg-blue" style="width:8rem"></text>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+<view class="cu-card case">
+	<view class="cu-item shadow" style="margin-top: 0;">
+		<view class="action margin-top margin-left">
+			<text class="cuIcon-titles text-blue"></text>
+			<text class="text-xl text-bold">体育类赛事</text>
+		</view>
+		<view class="padding bg-white">
+			<view class="grid col-3">
+				<view class="Wrap" bindtap="ChooseSports" data-id="BigBall">
+					<image class="ImgCover" src="../../images/ContestType/football.png" mode="aspectFit"></image><text>足篮大球比赛</text>
+				</view>
+				<view class="Wrap" bindtap="ChooseSports" data-id="SmallBall">
+					<image class="ImgCover" src="../../images/ContestType/pingpang.png" mode="aspectFit"></image><text>乒羽小球比赛</text>
+				</view>
+				<view class="Wrap" bindtap="ChooseSports" data-id="Other">
+					<image class="ImgCover" src="../../images/ContestType/Stadium.png" mode="aspectFit"></image><text>田径比赛</text>
+				</view>
+				<view class="Wrap" bindtap="ChooseSports" data-id="Other">
+					<image class="ImgCover" src="../../images/ContestType/other.png" mode="aspectFit"></image><text>其他比赛</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+<view class="cu-card case">
+	<view class="cu-item shadow" style="margin-top: 0;">
+		<view class="action margin-top margin-left">
+			<text class="cuIcon-titles text-blue"></text>
+			<text class="text-xl text-bold">文艺类赛事</text>
+		</view>
+		<view class="padding bg-white">
+			<view class="grid col-3">
+				<view class="Wrap" bindtap="ChooseSports" data-id="Other">
+					<image class="ImgCover" src="../../images/ContestType/debate.png" mode="aspectFit"></image><text>辩论比赛</text>
+				</view>
+				<view class="Wrap" bindtap="ChooseSports" data-id="Singing">
+					<image class="ImgCover" src="../../images/ContestType/singing.png" mode="aspectFit"></image><text>歌唱比赛</text>
+				</view>
+				<view class="Wrap" bindtap="ChooseSports" data-id="Defence">
+					<image class="ImgCover" src="../../images/ContestType/defence.png" mode="aspectFit"></image><text>答辩</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+<view class="ButtomBar">
+	<MainBar id="MainBar" />
+</view>

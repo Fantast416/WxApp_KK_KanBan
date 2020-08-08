@@ -1,0 +1,10 @@
+/* miniprogram/pages/AuditPage/AuditPage.wxss */
+.bg {
+  color: lightgray;
+  text-align: center;
+  width: 100vw;
+  position: fixed;
+  z-index: -1;
+  top: 50vh;
+  font-size: 40rpx;
+}

@@ -1,0 +1,192 @@
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+	<image src='../../../images/jumpwait.gif' class='png' mode='aspectFit'></image>
+	<view class='gray-text'>加载中...</view>
+</view>
+<view class="headNavi">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+	<view class="cu-bar bg-blue">
+		<view class="action" bindtap="returnHome">
+			<text class="cuIcon-back text-white"></text>返回
+		</view>
+		<view class="content text-bold">
+			比赛管理
+		</view>
+	</view>
+</view>
+<view style="height: {{statusBarHeight}}px"></view>
+<view id="cuBar" class="cu-bar"></view>
+
+
+
+<view id="selectBar" class="flex-bar main bg-white">
+	<view class="flex-bar-in">
+		<view bindtap="switchTab" data-index='3' class="li nav-item {{selection=='3'?'bar-bottom':''}}">
+			<view class="a">空闲选手</view>
+		</view>
+		<view bindtap="switchTab" data-index='0' class="li nav-item {{selection=='0'?'bar-bottom':''}}">
+			<view class="a">比赛信息</view>
+		</view>
+		<view bindtap="switchTab" data-index='1' class="li nav-item {{selection=='1'?'bar-bottom':''}}">
+			<view class="a">最新动态</view>
+		</view>
+		<view bindtap="switchTab" data-index='2' class="li nav-item {{selection=='2'?'bar-bottom':''}}">
+			<view class="a">聊天室</view>
+		</view>
+	</view>
+</view>
+
+<!-- below this is the match information -->
+<!---------------------选手管理-------------------------------->
+<view wx:if="{{selection=='3'}}">
+	<view class="cu-bar search bg-white" style="z-index: 999; margin-top: 20rpx;">
+		<view class="search-form round">
+			<text class="cuIcon-search"></text>
+			<form>
+				<input value="{{SearchName}}" type="text" placeholder="搜索选手" confirm-type="search" bindchange="BindSearchNameChange"></input>
+			</form>
+		</view>
+		<view class="action">
+			<button class="cu-btn bg-blue shadow-blur round" bindtap="SearchMember">搜索</button>
+		</view>
+	</view>
+	<scroll-view scroll-y class="indexes" scroll-into-view="indexes-{{listCurID}}" style="height:calc(100vh - {{barTop}}px)" scroll-with-animation="true" enable-back-to-top="true">
+		<block wx:for="{{list}}" wx:key="list">
+			<view class="padding indexItem-{{list[index]}}" id="indexes-{{list[index]}}" data-index="{{list[index]}}">{{list[index]}}</view>
+			<view class="no-padding">
+				<view class="check-item cu-card article" wx:for="{{SpareContestMember}}" wx:key="SpareContestMember" wx:for-index="sub" style="margin-top: 0; padding-bottom: 0;">
+					<view class="cu-list menu-avatar" wx:if="{{Index[sub]==list[index]}}">
+						<view class="cu-item" style="padding-right: 64rpx;">
+							<view class="cu-avatar bg-blue round lg"><text class="cuIcon-people text-white"></text></view>
+							<view class="content">
+								<text class="text-cut" style="font-size: 32rpx; font-weight: bold;">{{item.MemberName}}</text>
+								<view>
+									<view class="margin-left cu-tag bg-blue light round">{{item.MemberTag}}</view>
+								</view>
+							</view>
+							<button class="cu-btn round bg-red sm shadow margin-right" bindtap="AddMatchMember" data-id="{{item.MemberId}}" data-index="{{sub}}">加入比赛</button>
+						</view>
+					</view>
+				</view>
+			</view>
+		</block>
+	</scroll-view>
+	<view class="indexBar" style="height:calc(100vh - {{CustomBar}}px - 50px)">
+		<view class="indexBar-box" bindtouchstart="tStart" bindtouchend="tEnd" catchtouchmove="tMove">
+			<view class="indexBar-item" wx:for="{{list}}" wx:key="index" id="{{index}}" bindtouchstart="getCur" bindtouchend="setCur">{{list[index]}}</view>
+		</view>
+	</view>
+	<!--选择显示-->
+	<view hidden="{{hidden}}" class="indexToast">
+		{{listCur}}
+	</view>
+</view>
+
+<!-----------------------------------------------------比赛信息--------------------------------------------->
+<!-----------------------------------------------------比赛信息--------------------------------------------->
+<!-----------------------------------------------------比赛信息--------------------------------------------->
+<!-----------------------------------------------------比赛信息--------------------------------------------->
+<!-----------------------------------------------------比赛信息--------------------------------------------->
+<block wx:if="{{selection=='0'}}">
+
+	<view class="bg-blue" style="border-radius: 20rpx; margin: 20rpx;">
+		<view class="margin-left padding-top">
+			<text class="cuIcon-title margin-right-sm"></text>当前上场
+		</view>
+		<view class="flex-twice margin-bottom">
+			<view class="text-white text-xl text-bold margin-bottom-sm text-center">{{CurrentMember.MemberName}}</view>
+			<view class="flex justify-center padding-bottom">
+				<view class="text-white margin-right"><text class="cuIcon-voice margin-right-sm"></text>{{CurrentMember.MemberTag}}</view>
+				<view class="text-white margin-left"><text class="cuIcon-new margin-right-sm"></text>{{CurrentMember.MemberDescription}}</view>
+			</view>
+			<view class="text-white margin-left padding-bottom">当前已有{{PreAllMemberLen}}人参与评分</view>
+		</view>
+	</view>
+	<view class="bg-white" style="margin: 20rpx; border-radius: 20rpx;">
+		<view class="padding">
+			<view class="title"><text class="cuIcon-title text-red"></text>比赛状态</view>
+		</view>
+		<view class="padding-bottom">
+			<view class="cu-steps">
+				<view class="cu-item {{index>CurrentStep?'':'text-blue'}}" wx:for="{{ContestProcedures}}" wx:key data-index="{{index}}" bindtap="MainSetStatus">
+					<text class="num"></text>{{item}}
+				</view>
+			</view>
+			<!-- <switch class="red sm" checked="{{Statu}}" bindchange="changeStatu"></switch> -->
+		</view>
+	</view>
+	<view class="flex flex-direction" style="padding: 0 20rpx 0 20rpx;">
+		<button class="cu-btn bg-blue shadow-blur lg" bindtap="ExportExcel">查看现有分数集</button>
+	</view>
+	<view class="flex bg-white margin-top" style="margin: 20rpx; border-radius: 20rpx;">
+		<scroll-view scroll-y bindscrolltoupper="upper" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower">
+			<view wx:for="{{MatchMember}}" wx:key="" wx:for-item="item" wx:for-index="index">
+				<view class="flex text-grey solid-bottom justify-between">
+					<view class="solid-bottom text-xl padding" bindlongtap="DeleteMatchMember" data-id="{{item.Info.MemberId}}" data-item="{{item}}" style="width: 25vw;">
+						<view><text class="text-cut">{{item.Info.MemberName}}</text></view>
+						<view style="padding-left:10rpx; margin-left:10rpx" class="cu-tag round bg-blue sm light text-cut">{{item.Info.MemberTag}}</view>
+					</view>
+					<view class="padding-top">
+						<view>当前已有<text class="text-blue">{{item.ScoreNum}}</text>人对该组打分</view>
+						<view>当前该组平均分为<text class="text-blue">{{item.AverageScore}}</text>分</view>
+					</view>
+					<button class="cu-btn margin-top bg-blue round shadow-blur margin-right" bindtap="SetCurrentMember" data-id="{{item.Info.MemberId}}">设置上场</button>
+				</view>
+			</view>
+
+		</scroll-view>
+	</view>
+</block>
+
+
+<!-- below this is the new action -->
+<block wx:elif="{{selection=='1'}}">
+	<form bindsubmit="SendNewInformation">
+		<view class="cu-form-group margin-top">
+			<input class="solid-bottom bg-gray round padding-left" style="height: 64rpx;" name="NewInformation" placeholder="输入消息" value="{{NewInformation}}" bindinput="BindNewInfomationChange"></input>
+			<button wx-if="{{NewInformation==''}}" class="cu-btn bg-grey shadow text-white" style="margin-left:15rpx">发送</button>
+			<button wx-if="{{NewInformation!=''}}" class="cu-btn bg-blue shadow text-white" style="margin-left:15rpx" form-type="submit">发送</button>
+		</view>
+	</form>
+
+	<view class="bg-white" style="height:75%">
+		<scroll-view scroll-y bindscrolltoupper="upper" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower">
+			<view wx:for="{{MatchSendInformation}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+				<view class="cu-timeline">
+					<view class="cu-item cur cuIcon-noticefill">
+						<view class="content bg-gray shadow-blur">
+							<text>{{item.SendTime}}</text>
+							<text class="text-bold text-blue" style="padding-left:15rpx">管理员:</text>
+							<text style="padding-left:15rpx">{{item.Information}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</scroll-view>
+	</view>
+</block>
+
+<!-- below this is the chat room -->
+<block wx:if="{{selection=='2'}}">
+	<view class="bg-white margin-top">
+		<scroll-view scroll-y scroll-top="{{scrollTop}}" bindscrolltoupper="upper" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower" class="cu-chat bg-white" style="height:{{chatScrollViewHeight}}px">
+			<view wx:for="{{MainChatRoomInfo}}" wx:key="_id" wx:for-item="item" wx:for-index="index" id="{{index+1}}">
+				<block wx:if="{{item.Status==1}}">
+					<view class="date text-grey" wx-if="{{item.IsShowTime}}" style="text-align:center;">{{item.SendTime}}</view>
+					<view class="cu-item" style="padding: 30rpx 30rpx 30rpx">
+						<view class="cu-avatar radius" style="background-image:url({{item.SenderUrl}});"></view>
+						<view class="main" bindlongtap="WithDrawInfo" data-id="{{index}}">
+							<view class="content bg-gray shadow">
+								<text>{{item.ChatInfo}}</text>
+							</view>
+						</view>
+					</view>
+				</block>
+				<block wx:if="{{item.Status==0}}">
+					<view class="cu-item">
+						<view class="date" style="text-align:center">管理员撤回了该条消息</view>
+					</view>
+				</block>
+			</view>
+		</scroll-view>
+	</view>
+</block>

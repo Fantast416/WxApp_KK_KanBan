@@ -1,0 +1,17 @@
+/* miniprogram/pages/ContestLevel2/ContestLevel2.wxss */
+.headNavi {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+.blank {
+  color: white;
+  text-align: center;
+  width: 100vw;
+  position: fixed;
+  z-index: -1;
+  top: 50vh;
+  font-size: 40rpx;
+}

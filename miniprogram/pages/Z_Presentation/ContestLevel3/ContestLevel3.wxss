@@ -1,0 +1,113 @@
+/* miniprogram/pages/ContestLevel3/ContestLevel3.wxss */
+page{
+  height:100%;
+}
+.bg {
+  color: lightgray;
+  text-align: center;
+  width: 100vw;
+  position: fixed;
+  z-index: -1;
+  top: 50vh;
+  font-size: 40rpx;
+}
+.headNavi {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+#infoBar {
+  border-radius: 0 0 48rpx 48rpx;
+}
+
+.bar-bottom{
+  border-bottom:2px solid #0081ff;
+}
+
+.scoreInput{
+  padding: 10rpx;
+  background-color: lightgray;
+  border-radius: 20rpx;
+}
+
+.info-container {
+  background-color: white;
+  height: 23%;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /*padding: 200rpx 0;*/
+  box-sizing: border-box;
+  margin: 0 0 10rpx 0;
+}
+
+.info-container .avater{
+  padding:70rpx 40rpx 70rpx 60rpx;
+  width: 45%;
+  text-align: center;
+}
+
+.info-container .avater image{
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 60%;
+  background-size: cover;
+}
+
+.info-container .userInfo{
+  width: 60%;
+  padding-left: 10rpx;
+}
+
+.info-container .userInfo .nickname{
+  margin: 70rpx 0 20rpx 0;
+  font-size: 40rpx;
+  font-weight: 400;
+  padding:30rpx 0 0 30rpx;
+}
+
+.info-container .userInfo .statues{
+  padding:0 0 0 20rpx;
+  margin: 0 0 20rpx 0;
+  display: flex;
+}
+
+.info-container .userInfo .no-statues{
+  padding:0 0 0 25rpx;
+  margin: 20rpx 0 0rpx 0;
+  display: flex;
+}
+
+.flex-bar {
+  margin: 20rpx;
+  border-radius: 20rpx;
+  padding: 0 48rpx;
+  height: 86rpx;
+  line-height: 86rpx;
+  position: relative;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+.shadowProjector {
+  box-shadow: inset 0px -20px 8px -20px #0081ff;
+}
+.flex-bar .flex-bar-in {
+display: -webkit-box;
+display: -webkit-flex;
+display: -ms-flexbox;
+display: flex;
+height: 100%;
+flex-direction: row;
+}
+
+.flex-bar .flex-bar-in .li {
+  width: 33%;
+  height: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  margin: 0 5px;
+}
+.flex-bar .flex-bar-in .a {
+  display: block;
+}

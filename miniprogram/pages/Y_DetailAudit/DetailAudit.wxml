@@ -1,0 +1,84 @@
+<!--miniprogram/pages/DetailAudit/DetailAudit.wxml-->
+<view class="cu-card case" style="margin-top:50rpx">
+	<view class="cu-item shadow" style="margin-top: 0;">
+		<view class="cu-form-group">
+			<view class="title">赛事名称</view>
+			<input name="ContestName" class="detailText" placeholder-class="phcolor" placeholder="Contest Name" value="{{ContestName}}" bindchange="BindContestNameChange"></input>
+			<text class="cuIcon-title text-blue"></text>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">赛事地点</view>
+			<input name="ContestPlace" class="detailText" placeholder-class="phcolor" placeholder="Contest Place" value="{{ContestPlace}}" bindchange="BindContestPlaceChange"></input>
+			<text class="cuIcon-title text-blue"></text>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">主办单位</view>
+			<input name="HoldOrganization" class="detailText" placeholder-class="phcolor" placeholder="Organizer" value="{{HoldOrganization}}" bindchange="BindOrganizationChange"></input>
+			<text class="cuIcon-title text-blue"></text>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">赛事类型</view>
+			<view class="cu-tag bg-blue light lg round">{{ContestType}}</view>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">赛事标签</view>
+		</view>
+		<view style="display: flex; flex-direction: row; justify-content: space-even;">
+			<view wx:for="{{ContestTag}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+				<view class="cu-tag bg-blue light sm round" style="margin-left:20rpx;">{{item}}</view>
+			</view>
+		</view>
+	</view>
+</view>
+<view class="cu-card case">
+	<view class="cu-item shadow" style="margin-top: 0;">
+		<view class="cu-form-group">
+			<view class="title">赛事开始时间</view>
+			<picker name="date" mode="date" value="{{StartDate}}" start="{{Today}}" end="{{DateBorder}}" bindchange="BindStartDateChange">
+				<view>{{StartDate}}</view>
+			</picker>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">赛事预计结束时间</view>
+			<picker name="date" mode="date" value="{{EndDate}}" start="{{Today}}" end="{{DateBorder}}" bindchange="BindEndDateChange">
+				<view>{{EndDate}}</view>
+			</picker>
+		</view>
+	</view>
+</view>
+<view class="cu-card case">
+	<view class="cu-item shadow" style="margin-top: 0;">
+		<view class="cu-form-group align-start">
+			<view class="title">赛事介绍</view>
+			<textarea name="ContestDescription" class="detailText" placeholder-class="phcolor" placeholder="Contest Detail" value="{{ContestDescription}}" bindinput="BindContestDescriptionChange"></textarea>
+		</view>
+	</view>
+</view>
+<view class="padding-lr padding-bottom flex flex-direction">
+	<button class="bt cu-btn bg-gradual-blue margin-tb-sm lg" form-type="submit" wx-if="{{Authority=='Admin'}}">更新信息</button>
+</view>
+<view class="cu-card case">
+	<view class="cu-form-group margin-bottom">
+		<view class="grid col-4 grid-square flex-sub">
+			<view class="bg-img" wx:for="{{FileId}}" wx:key="{{index}}" wx:for-item="item">
+				<image src='{{item}}' data-index="{{index}}" bindtap="handleImagePreview" mode='aspectFill'></image>
+			</view>
+			<view class="solids" bindtap="chooseImage" wx:if="{{NewFileId.length<4}}">
+				<text class="cuIcon-cameraadd"></text>
+			</view>
+		</view>
+	</view>
+</view>
+
+<button class="bt cu-btn bg-gradual-blue margin-tb-sm lg" bindtap="Pass" style="margin-left:150rpx;">通过审核</button>
+<button class="bt cu-btn bg-gradual-blue margin-tb-sm lg" bindtap="Reject" style="margin-left:50rpx;">拒绝发布</button>
+
+<view class="cu-card case">
+	<view class="cu-item shadow" style="margin-top: 0;">
+		<view class="cu-form-group">
+			<view class="title">拒绝理由</view>
+			<input class="detailText" bindinput="BindInputReason" value="{{Reason}}">理由：</input>
+			<text class="cuIcon-title text-blue"></text>
+		</view>
+	</view>
+</view>

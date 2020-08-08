@@ -1,0 +1,16 @@
+/* miniprogram/pages/SearchAccurateContest/SearchAccurateContest.wxss */
+.headNavi {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+.blank {
+  color: lightgray;
+  text-align: center;
+  width: 100vw;
+  position: fixed;
+  z-index: -1;
+  top: 50vh;
+}

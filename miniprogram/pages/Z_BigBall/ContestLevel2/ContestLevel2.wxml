@@ -1,0 +1,239 @@
+<!--miniprogram/pages/ContestLevel2/ContestLevel2.wxml-->
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <image src='../../../images/jumpwait.gif' class='png' mode='aspectFit'></image>
+  <view class='gray-text'>加载中...</view>
+</view>
+
+<view class="headNavi">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+	<view class="cu-bar bg-blue">
+		<view class="action" bindtap="returnHome">
+			<text class="cuIcon-back text-white"></text>返回
+		</view>
+		<view class="content text-bold">
+			赛事详情
+		</view>
+	</view>
+</view>
+<view style="height: {{statusBarHeight}}px"></view>
+<view class="cu-bar"></view>
+<view>
+	<button wx-if="{{IsAdmin}}" class="cu-btn bg-blue shadow-blur round" style="position: absolute; z-index: 999; margin-top: 20rpx; right: 20rpx;" bindtap="GotoAdminLevel2">管理比赛</button>
+	<swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500" bindchange="cardSwiper" indicator-color="#8799a3" indicator-active-color="#0081ff">
+		<swiper-item wx:for="{{FileId}}" wx:key="_id" wx:for-item="item" wx:for-index="index" class="{{cardCur==index?'cur':''}}">
+			<image src="{{item}}" data-index="{{index}}" bindtap="handleImagePreview" mode="aspectFill"></image>
+		</swiper-item>
+	</swiper>
+</view>
+
+<scroll-view scroll-x class="bg-white nav" scroll-with-animation scroll-left="{{scrollLeft}}">
+	<view class="cu-item {{selection=='0'?'text-blue cur':''}}" bindtap="switchTab" data-index='0'>
+		比赛详情
+	</view>
+	<view class="cu-item {{selection=='2'?'text-blue cur':''}}" bindtap="switchTab" data-index='2'>
+		所有比赛
+	</view>
+	<view class="cu-item {{selection=='1'?'text-blue cur':''}}" bindtap="switchTab" data-index='1'>
+		正在进行
+	</view>
+	<view class="cu-item {{selection=='3'?'text-blue cur':''}}" bindtap="switchTab" data-index='3'>
+		即将进行
+	</view>
+	<view class="cu-item {{selection=='4'?'text-blue cur':''}}" bindtap="switchTab" data-index='4'>
+		已经结束
+	</view>
+</scroll-view>
+
+<view wx:if="{{selection=='0'}}">
+	<!--
+	赛事名称：{{ContestName}}
+	赛事类型：{{ ContestType}}
+	赛事地点：{{ContestPlace}}（可加入地图显示）
+	赛事持续时间：{{StartDate}} 至 {{EndDate}}
+	赛事简介：{{ContestDescription}}
+	赛事主办方：{{HoldOrganization}}
+	-->
+	<view class="cu-card case">
+		<view class="cu-item shadow text-left margin-top">
+			<view class="cu-form-group">
+				<view class="title">赛事名称</view>
+				<text class="detailText text-lg text-grey" style="width: 56vw;">{{ContestName}}</text>
+				<text class="cuIcon-title text-blue"></text>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">赛事地点</view>
+				<text class="detailText text-lg text-grey" style="width: 56vw;">{{ContestPlace}}</text>
+				<text class="cuIcon-title text-blue"></text>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">主办单位</view>
+				<text class="detailText text-lg text-grey" style="width: 56vw;">{{HoldOrganization}}</text>
+				<text class="cuIcon-title text-blue"></text>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">赛事类型</view>
+				<view class="cu-tag bg-blue light lg round">{{ContestType}}</view>
+			</view>
+		</view>
+	</view>
+	<view class="cu-card case">
+		<view class="cu-item shadow" style="margin-top: 0;">
+			<view class="cu-form-group">
+				<view class="title">赛事开始时间</view>
+				<text class="detailText text-lg text-grey" style="width: 40vw;">{{StartDate}}</text>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">赛事预计结束时间</view>
+				<text class="detailText text-lg text-grey" style="width: 40vw;">{{EndDate}}</text>
+			</view>
+		</view>
+	</view>
+	<view class="cu-card case">
+		<view class="cu-item shadow" style="margin-top: 0;">
+			<view class="title margin">赛事介绍</view>
+			<view class="cu-form-group align-start">
+				<view class="text-content text-grey text-lg">{{ContestDescription}}</view>
+			</view>
+
+		</view>
+	</view>
+</view>
+
+<view wx:if="{{selection=='3'}}" class="check-item cu-card article" wx:for="{{MatchNotYetStart}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+	<view class="cu-item shadow" style="margin-bottom: 0; padding-bottom: 0;" bindtap="GotoContestLevel3" data-id="{{item}}">
+		<view style="margin: 16rpx; margin-left: 32rpx; margin-bottom: 12rpx;">
+			<view>
+				场地：
+				<text style="font-weight: bold;">{{item.MatchPlace}}</text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='0'}}">正在进行</text>
+				<text wx:if="{{item.Status=='0'}}" class="cuIcon-playfill text-red"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='-1'}}">即将进行</text>
+				<text wx:if="{{item.Status=='-1'}}" class="cuIcon-icloading text-blue"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='1'}}">已经结束</text>
+				<text wx:if="{{item.Status=='1'}}" class="cuIcon-title text-gray"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='2'}}">暂停中</text>
+				<text wx:if="{{item.Status=='2'}}" class="cuIcon-stop text-red"></text>
+			</view>
+		</view>
+		<view class="content">
+			<view class="flex margin-bottom-sm mb-sm" style="width: 100%; text-align: center;">
+				<view class="flex-twice margin-xs radius">
+					<view class="text-grey">{{item.TeamAName}}</view>
+					<view class="text-blue" style="font-size: 64rpx; font-weight: bold;">{{item.TeamAScore}}</view>
+				</view>
+				<view class="flex-sub margin-xs radius">
+					<view style="margin-bottom: 24rpx;">vs</view>
+					<view>:</view>
+				</view>
+				<view class="flex-twice margin-xs radius">
+					<view class="text-grey">{{item.TeamBName}}</view>
+					<view class="text-blue" style="font-size: 64rpx; font-weight: bold;">{{item.TeamBScore}}</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+<view wx:if="{{selection=='1'}}" class="check-item cu-card article" wx:for="{{MatchIsGoing}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+	<view class="cu-item shadow" style="margin-bottom: 0; padding-bottom: 0;" bindtap="GotoContestLevel3" data-id="{{item}}">
+		<view style="margin: 16rpx; margin-left: 32rpx; margin-bottom: 12rpx;">
+			<view>
+				场地：
+				<text style="font-weight: bold;">{{item.MatchPlace}}</text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='0'}}">正在进行</text>
+				<text wx:if="{{item.Status=='0'}}" class="cuIcon-playfill text-red"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='-1'}}">即将进行</text>
+				<text wx:if="{{item.Status=='-1'}}" class="cuIcon-icloading text-blue"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='1'}}">已经结束</text>
+				<text wx:if="{{item.Status=='1'}}" class="cuIcon-title text-gray"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='2'}}">暂停中</text>
+				<text wx:if="{{item.Status=='2'}}" class="cuIcon-stop text-red"></text>
+			</view>
+		</view>
+		<view class="content">
+			<view class="flex margin-bottom-sm mb-sm" style="width: 100%; text-align: center;">
+				<view class="flex-twice margin-xs radius">
+					<view class="text-grey">{{item.TeamAName}}</view>
+					<view class="text-blue" style="font-size: 64rpx; font-weight: bold;">{{item.TeamAScore}}</view>
+				</view>
+				<view class="flex-sub margin-xs radius">
+					<view style="margin-bottom: 24rpx;">vs</view>
+					<view>:</view>
+				</view>
+				<view class="flex-twice margin-xs radius">
+					<view class="text-grey">{{item.TeamBName}}</view>
+					<view class="text-blue" style="font-size: 64rpx; font-weight: bold;">{{item.TeamBScore}}</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+<view wx:if="{{selection=='4'}}" class="check-item cu-card article" wx:for="{{MatchIsEnded}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+	<view class="cu-item shadow" style="margin-bottom: 0; padding-bottom: 0;" bindtap="GotoContestLevel3" data-id="{{item}}">
+		<view style="margin: 16rpx; margin-left: 32rpx; margin-bottom: 12rpx;">
+			<view>
+				场地：
+				<text style="font-weight: bold;">{{item.MatchPlace}}</text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='0'}}">正在进行</text>
+				<text wx:if="{{item.Status=='0'}}" class="cuIcon-playfill text-red"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='-1'}}">即将进行</text>
+				<text wx:if="{{item.Status=='-1'}}" class="cuIcon-icloading text-blue"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='1'}}">已经结束</text>
+				<text wx:if="{{item.Status=='1'}}" class="cuIcon-title text-gray"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='2'}}">暂停中</text>
+				<text wx:if="{{item.Status=='2'}}" class="cuIcon-stop text-red"></text>
+			</view>
+		</view>
+		<view class="content">
+			<view class="flex margin-bottom-sm mb-sm" style="width: 100%; text-align: center;">
+				<view class="flex-twice margin-xs radius">
+					<view class="text-grey">{{item.TeamAName}}</view>
+					<view class="text-blue" style="font-size: 64rpx; font-weight: bold;">{{item.TeamAScore}}</view>
+				</view>
+				<view class="flex-sub margin-xs radius">
+					<view style="margin-bottom: 24rpx;">vs</view>
+					<view>:</view>
+				</view>
+				<view class="flex-twice margin-xs radius">
+					<view class="text-grey">{{item.TeamBName}}</view>
+					<view class="text-blue" style="font-size: 64rpx; font-weight: bold;">{{item.TeamBScore}}</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+<view wx:if="{{selection=='2'}}" class="check-item cu-card article" wx:for="{{AllMatchInfo}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+	<view class="cu-item shadow" style="margin-bottom: 0; padding-bottom: 0;" bindtap="GotoContestLevel3" data-id="{{item}}">
+		<view style="margin: 16rpx; margin-left: 32rpx; margin-bottom: 12rpx;">
+			<view>
+				场地：
+				<text style="font-weight: bold;">{{item.MatchPlace}}</text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='0'}}">正在进行</text>
+				<text wx:if="{{item.Status=='0'}}" class="cuIcon-playfill text-red"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='-1'}}">即将进行</text>
+				<text wx:if="{{item.Status=='-1'}}" class="cuIcon-icloading text-blue"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='1'}}">已经结束</text>
+				<text wx:if="{{item.Status=='1'}}" class="cuIcon-title text-gray"></text>
+				<text style="margin-left: 24rpx;" wx:if="{{item.Status=='2'}}">暂停中</text>
+				<text wx:if="{{item.Status=='2'}}" class="cuIcon-stop text-red"></text>
+			</view>
+		</view>
+		<view class="content">
+			<view class="flex margin-bottom-sm mb-sm" style="width: 100%; text-align: center;">
+				<view class="flex-twice margin-xs radius">
+					<view class="text-grey">{{item.TeamAName}}</view>
+					<view class="text-blue" style="font-size: 64rpx; font-weight: bold;">{{item.TeamAScore}}</view>
+				</view>
+				<view class="flex-sub margin-xs radius">
+					<view style="margin-bottom: 24rpx;">vs</view>
+					<view>:</view>
+				</view>
+				<view class="flex-twice margin-xs radius">
+					<view class="text-grey">{{item.TeamBName}}</view>
+					<view class="text-blue" style="font-size: 64rpx; font-weight: bold;">{{item.TeamBScore}}</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>

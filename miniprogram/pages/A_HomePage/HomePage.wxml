@@ -1,0 +1,115 @@
+<!--miniprogram/pages/HomePage/HomePage.wxml-->
+<view class="cu-modal show" wx-if="{{IsFirst}}">
+  <view class="cu-dialog">
+	 
+    <view class="bg-img" style="height:400rpx;">
+		 <view style="margin-top:20rpx;"> <text class="text-blue" style="font-size:40rpx;">欢迎来到看板娘</text></view> 
+ <view style="margin-top:20rpx;"> <text>请问需要进入看板娘引导吗？</text></view> 
+					<image src="../../images/logo.png" style="height:60%;width:35%"></image>
+				<view>		 <text>通过点击首页上方对应图片也可进入引导哦~</text></view>
+    </view>
+    <view class="cu-bar bg-white">
+      <view class="action margin-0 flex-sub  solid-left" bindtap="GotoGuide">进入引导</view>
+			<view class="action margin-0 flex-sub  solid-left" bindtap="HideModal">直接进入</view>
+    </view>
+  </view>
+</view>
+
+<view class="headNavi">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px;"></view>
+	<view class="cu-bar bg-blue">
+		<image src="../../images/logowithwords.png" class="logoimage"></image>
+		<view class="content text-bold">
+			首页
+		</view>
+	</view>
+</view>
+<view class="gradual bg-blue" style="opacity: {{colorfade}}; z-index: -999;"></view>
+
+<view class="load" wx-if="{{!IsReady}}" style="z-index: 100">
+	<view class="whiteboard"></view>
+	<!--view>玩命加载中</view-->
+	<view class="jumpwait">
+		<image class="jumpwaitimg" src="../../images/jumpwait.gif"></image>
+	</view>
+</view>
+
+
+<view style="height: {{statusBarHeight}}px"></view>
+<view class="cu-bar"></view>
+<view class="swiperCard">
+	<swiper class="card-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500" bindchange="cardSwiper" indicator-color="#8799a3" indicator-active-color="#0081ff">
+		<swiper-item wx:for="{{Images}}" wx:key="_id" wx:for-item="item" wx:for-index="index" class="{{cardCur==index?'cur':''}}">
+			<view class="swiper-item" data-index="{{index}}" bindtap="GotoLink">
+				<image src="{{item.FileId[0]}}" ></image>
+			</view>
+		</swiper-item>
+	</swiper>
+</view>
+
+<view class="cu-bar search bg-white" wx-if="{{IsReady}}">
+	<view class="search-form round">
+		<text class="cuIcon-search"></text>
+		<form>
+			<input value="{{SearchContestName}}" type="text" placeholder="搜索赛事" confirm-type="search" bindinput="BindSearchContestNameChange"></input>
+		</form>
+	</view>
+	<view class="action" wx-if="{{SearchContestName==null||SearchContestName==''}}">
+		<button class="cu-btn bg-grey shadow-blur round">搜索</button>
+	</view>
+	<view class="action" wx-if="{{SearchContestName!=null&&SearchContestName!=''}}">
+		<button class="cu-btn bg-blue shadow-blur round" bindtap="SearchContest">搜索</button>
+	</view>
+</view>
+
+<view wx:for="{{AllContest}}" wx:key="_id" wx:for-item="item" wx:for-index="index" class="cu-card article">
+	<view class="cardItem bg-white" style="margin-bottom: 0;" wx-if="{{item.ApprovalStatus == 1}}">
+		<view>
+			<image class="cardimg" src="{{item.FileId[0]}}" mode="aspectFill"></image>
+		</view>
+		<view class="cardimg-overlay"></view>
+		<view class="padding" style="font-size: 36rpx; font-weight: bold;position:absolute;">
+			<view class="text-cut">{{item.ContestName}}</view>
+		</view>
+		<view style="height:100rpx;"></view>
+		<view style="display: flex; flex-direction: row; justify-content: space-even;">
+			<view class="margin-left">
+				<view class="cu-tag bg-blue light sm round">{{item.ContestType}}</view>
+			</view>
+			<view wx:for="{{item.ContestTag}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+				<view class="cu-tag bg-blue light sm round" style="margin-left:20rpx;" wx-if="{{item!=''}}">{{item}}</view>
+			</view>
+		</view>
+		<view class="content" style="position: absolute;">
+			<view class="desc" style="margin-top: 20rpx; width: 85vw;">
+				<view class="text-content" bindtap="GotoContestLevel2" data-id="{{item}}">
+					<view><text class="cuIcon-time margin-right margin-left"></text>{{item.StartDate}} ~ {{item.EndDate}}</view>
+					<view><text class="cuIcon-location margin-right margin-left"></text>{{item.ContestPlace}}|{{item.Distance}}</view>
+					<view><text class="cuIcon-friend margin-right margin-left"></text>{{item.ScanNum}}</view>
+				</view>
+				<view style="position: absolute; margin-top: 10rpx;">
+					<image class="margin-right" src="{{item.avatarUrl}}" style="margin-left: 32rpx; height: 48rpx; width: 48rpx; border-radius: 24rpx;"></image>
+					<text>{{item.HoldOrganization}}</text>
+				</view>
+				<view style="position: absolute; right: 0; z-index: 100;">
+					<view bindtap="LoveContest" style="margin-top: 32rpx;" data-id="{{item}}" data-index="{{index}}" wx-if="{{item.Type=='NotLove'}}">
+						<text class="cuIcon-like lg text-gray margin-right"></text>
+						<text>收藏</text>
+					</view>
+					<view bindtap="DeleteLoveContest" style="margin-top: 32rpx;" data-id="{{item}}" data-index="{{index}}" wx-if="{{item.Type=='Love'}}">
+						<text class="cuIcon-likefill lg text-gray margin-right"></text>
+						<text>取消收藏</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+
+
+<view style="height: 150rpx"></view>
+
+<view class="ButtomBar">
+	<MainBar id="MainBar" />
+</view>

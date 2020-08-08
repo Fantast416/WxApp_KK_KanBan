@@ -1,0 +1,62 @@
+{
+  "pages": [
+    "pages/A_HomePage/HomePage",
+    "pages/A_ChooseContestType/ChooseContestType",
+    "pages/CreateContest/CreateContest",
+    "pages/A_User/User",
+    "pages/Z_BigBall/ContestLevel2/ContestLevel2",
+    "pages/Z_BigBall/ContestLevel2Admin/ContestLevel2Admin",
+    "pages/Z_BigBall/ContestLevel3/ContestLevel3",
+    "pages/Z_BigBall/ContestLevel3Admin/ContestLevel3Admin",
+    "pages/Z_SmallBall/ContestLevel2/ContestLevel2",
+    "pages/Z_SmallBall/ContestLevel2Admin/ContestLevel2Admin",
+    "pages/Z_SmallBall/ContestLevel3/ContestLevel3",
+    "pages/Z_SmallBall/ContestLevel3Admin/ContestLevel3Admin",
+    "pages/Z_SingleRanking/ContestLevel2/ContestLevel2",
+    "pages/Z_SingleRanking/ContestLevel2Admin/ContestLevel2Admin",
+    "pages/Z_SingleRanking/ContestLevel3/ContestLevel3",
+    "pages/Z_SingleRanking/ContestLevel3Admin/ContestLevel3Admin",
+    "pages/Z_Presentation/ContestLevel2/ContestLevel2",
+    "pages/Z_Presentation/ContestLevel2Admin/ContestLevel2Admin",
+    "pages/Z_Presentation/ContestLevel3/ContestLevel3",
+    "pages/Z_Presentation/ContestLevel3Admin/ContestLevel3Admin",
+    "pages/SearchAccurateContest/SearchAccurateContest",
+    "pages/Y_ProgramAdmin/ProgramAdmin",
+    "pages/Y_AuditPage/AuditPage",
+    "pages/Y_DetailAudit/DetailAudit",
+    "pages/Y_ContestRule/ContestRule",
+    "pages/UsingGuide/UsingGuide",
+    "pages/Z_TestPage"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "Wx-Incas2020",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "custom": true,
+    "list": [
+      {
+        "pagePath": "pages/A_HomePage/HomePage",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/A_ChooseContestType/ChooseContestType",
+        "text": "发布赛事"
+      },
+      {
+        "pagePath": "pages/A_User/User",
+        "text": "我的"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "sitemapLocation": "sitemap.json"
+}

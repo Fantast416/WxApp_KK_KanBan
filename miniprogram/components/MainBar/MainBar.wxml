@@ -1,0 +1,20 @@
+<!--components/MainBar/MainBar.wxml-->
+<view class="cu-bar tabbar bg-white">
+	<view class="action text-blue" data-index='0' bindtap="switchTab" wx:if="{{selected=='0'}}">
+		<view class="cuIcon-homefill"></view> 首页
+	</view>
+  <view class="action text-gray" data-index='0' bindtap="switchTab" wx:if="{{selected!='0'}}">
+		<view class="cuIcon-home"></view> 首页
+	</view>
+	<view class="action text-gray add-action" data-index='1' bindtap="switchTab">
+		<button class="cu-btn cuIcon-add bg-blue shadow"></button>
+		<text wx:if="{{selected!='1'}}">发布赛事</text>
+		<text wx:if="{{selected=='1'}}" class="text-blue">发布赛事</text>
+	</view>
+	<view class="action text-blue" data-index='2' bindtap="switchTab" wx:if="{{selected=='2'}}">
+		<view class="cuIcon-myfill"></view> 我的
+	</view>
+  <view class="action text-gray" data-index='2' bindtap="switchTab" wx:if="{{selected!='2'}}">
+		<view class="cuIcon-my"></view> 我的
+	</view>
+</view>

@@ -1,0 +1,23 @@
+<!--miniprogram/pages/ProgramAdmin/ProgramAdmin.wxml-->
+<view style="text-align:center;margin-top:50rpx;">待审核赛事列表</view>
+
+<view wx:for="{{NeedAuditContest}}" wx:key="_id" wx:for-item="item" wx:for-index="index" class="cu-card article">
+	<view class="cu-item shadow" style="margin-bottom: 0;" >
+		<view style="font-size: 36rpx; font-weight: bold; margin: 16rpx; margin-left: 32rpx;">
+			<view class="text-cut">{{item.ContestName}}</view>
+		</view>
+		<view class="content">
+			<image src="{{item.FileId[0]}}" mode="aspectFill"></image>
+			<view class="desc">
+				<view class="text-content" bindtap="GotoAuditContest" data-id="{{item}}">
+					<view>比赛地点:{{item.ContestPlace}}</view>
+					<view>开始时间:{{item.StartDate}}</view>
+					<view>结束时间:{{item.EndDate}}</view>
+				</view>
+				<view style="display: flex; flex-direction: row; justify-content: space-between;">
+					<view class="cu-tag bg-blue light sm round">{{item.ContestType}}</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>

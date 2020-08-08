@@ -1,0 +1,241 @@
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <image src='../../../images/jumpwait.gif' class='png' mode='aspectFit'></image>
+  <view class='gray-text'>加载中...</view>
+</view>
+<view class="headNavi">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+	<view class="cu-bar bg-blue">
+		<view class="action" bindtap="returnHome">
+			<text class="cuIcon-back text-white"></text>返回
+		</view>
+		<view class="content text-bold">
+			比赛信息
+		</view>
+	</view>
+</view>
+<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+<view class="cu-bar bg-blue" id="cuBar"></view>
+
+<view id="infoBar" class="bg-blue">
+	<view class="flex justify-start" style="padding:0 30rpx 0 30rpx">
+		<view>
+			<text class="text-white text-lg cuIcon-locationfill">{{MatchPlace}}</text>
+		</view>
+	</view>
+	<view class="flex justify-center" style="padding:0 30rpx 0 30rpx">
+		<view>
+			<view class="cu-tag bg-white light round">{{DuringTime}}分钟</view>
+		</view>
+	</view>
+	<view class="flex justify-center" style="padding:0 30rpx 0 30rpx">
+		<view class="text-lg padding-top padding-right" style="width: 35vw;">
+			<text class="text-white">{{TeamAName}}</text>
+		</view>
+		<view class="text-sl padding">
+			<text class=" bold text-white">{{TeamAScore}}</text>
+		</view>
+		<view class="text-sl padding">
+			<text class=" bold text-white">:</text>
+		</view>
+		<view class="text-sl padding">
+			<text class=" bold text-white">{{TeamBScore}}</text>
+		</view>
+		<view class="text-lg padding-top padding-left" style="width: 35vw; text-align: right;">
+			<text class="text-white">{{TeamBName}}</text>
+		</view>
+	</view>
+</view>
+
+<!--view class="flex-bar main margin-top bg-white" id="selectBar">
+	<view class="flex-bar-in">
+		<view bindtap="switchTab" data-index='0' class="li nav-item {{selection=='0'?'bar-bottom':''}}">
+			<view class="a">比赛信息</view>
+		</view>
+		<view bindtap="switchTab" data-index='1' class="li nav-item {{selection=='1'?'bar-bottom':''}}">
+			<view class="a">最新动态</view>
+		</view>
+		<view bindtap="switchTab" data-index='2' class="li nav-item {{selection=='2'?'bar-bottom':''}}">
+			<view class="a">聊天室</view>
+		</view>
+	</view>
+</view-->
+
+<view class="flex-bar main" id="selectBar">
+	<view class="flex-bar-in">
+		<view bindtap="switchTab" data-index='0' class="li nav-item {{selection=='0'?'bar-bottom':''}}">
+			<view class="a">比赛信息</view>
+		</view>
+		<view bindtap="switchTab" data-index='1' class="li nav-item {{selection=='1'?'bar-bottom':''}}">
+			<view class="a">最新动态</view>
+		</view>
+		<view bindtap="switchTab" data-index='2' class="li nav-item {{selection=='2'?'bar-bottom':''}}">
+			<view class="a">聊天室</view>
+		</view>
+	</view>
+</view>
+
+<!-- below this is the match information -->
+<block wx:if="{{selection=='0'}}">
+	<scroll-view scroll-y bindscrolltoupper="upper" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower" class="bg-white" style="height:{{infoScrollViewHeight}}px">
+		<view class="flex bg-white margin-top text-lg">
+			<text class="text-grey cuIcon-service margin-left">赛事裁判：</text>
+			<view wx:for="{{RefereeName}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+				<text class="text-grey">{{item}}</text>
+			</view>
+		</view>
+		<view class="flex bg-white">
+			<view style="width:50%">
+				<view class="flex justify-center" style="padding:0 30rpx 0 30rpx">
+					<view class="text-xl padding">
+						<text class="text-blue">{{TeamAName}}</text>
+					</view>
+				</view>
+				<view class="flex justify-center" style="padding:0 30rpx 0 30rpx">
+					<view class="text-l">
+						<view class="cu-tag bg-blue light round">队员</view>
+					</view>
+				</view>
+				<view wx:for="{{TeamAMember}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+					<view class="flex text-grey justify-center">
+						<view class="text-l padding">
+							<text class="text-cut">{{item.MemberName}}</text>
+							<view style="padding-left:10rpx; margin-left:10rpx" class="cu-tag round bg-blue sm">{{item.MemberTag}}</view>
+						</view>
+					</view>
+				</view>
+			</view>
+
+			<view style="width:50%">
+				<view class="flex justify-center" style="padding:0 30rpx 0 30rpx">
+					<view class="text-xl padding">
+						<text class="text-blue">{{TeamBName}}</text>
+					</view>
+				</view>
+				<view class="flex justify-center" style="padding:0 30rpx 0 30rpx">
+					<view class="text-l">
+						<view class="cu-tag bg-blue light round">队员</view>
+					</view>
+				</view>
+				<view wx:for="{{TeamBMember}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+					<view class="flex text-grey justify-center">
+						<view class="text-l padding">
+							<text class="text-cut">{{item.MemberName}}</text>
+							<view style="padding-left:10rpx; margin-left:10rpx" class="cu-tag round bg-blue sm">{{item.MemberTag}}</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</scroll-view>
+</block>
+
+<!-- below this is the new action -->
+<block wx:elif="{{selection=='1'}}">
+	<view class="bg-white">
+		<scroll-view scroll-y scroll-top="{{scrollTopAdmin}}" bindscrolltoupper="upper" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower" class="bg-white" style="height:{{newsScrollViewHeight}}px">
+			<view wx:for="{{MatchSendInformation}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+				<view class="cu-timeline">
+					<view class="cu-item cur cuIcon-noticefill">
+						<view class="content bg-gray shadow-blur">
+							<text>{{item.SendTime}}</text>
+							<text class="text-bold text-blue" style="padding-left:15rpx">管理员:</text>
+							<text style="padding-left:15rpx">{{item.Information}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</scroll-view>
+	</view>
+</block>
+<!-- below this is the chat room -->
+<block wx:else>
+	<view class="bg-white">
+		<scroll-view scroll-y scroll-top="{{scrollTop}}" bindscrolltoupper="upper" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower" class="cu-chat bg-white" style="height:{{chatScrollViewHeight}}px">
+			<view wx:for="{{MainChatRoomInfo}}" wx:key="_id" wx:for-item="item" wx:for-index="index" id="{{index+1}}">
+				<block wx:if="{{item.isMyself==1&&item.Status==1}}">
+					<view class="date text-grey" wx-if="{{item.IsShowTime}}" style="text-align:center;">{{item.SendTime}}</view>
+					<view class="cu-item self" style="padding: 30rpx 30rpx 30rpx">
+						<view class="main">
+							<view class="content bg-blue shadow">
+								<text>{{item.ChatInfo}}</text>
+							</view>
+						</view>
+						<view class="cu-avatar radius" style="background-image:url({{item.SenderUrl}});"></view>
+					</view>
+				</block>
+				<block wx:if="{{item.isMyself==0&&item.Status==1}}">
+					<view class="date text-grey" wx-if="{{item.IsShowTime}}" style="text-align:center;">{{item.SendTime}}</view>
+					<view class="cu-item" style="padding: 30rpx 30rpx 30rpx">
+						<view class="cu-avatar radius" style="background-image:url({{item.SenderUrl}});"></view>
+						<view class="main">
+							<view class="content bg-gray shadow">
+								<text>{{item.ChatInfo}}</text>
+							</view>
+						</view>
+					</view>
+				</block>
+				<block wx:if="{{item.Status==0}}">
+					<view class="cu-item">
+						<view class="date" style="text-align:center">管理员撤回了该条消息</view>
+					</view>
+				</block>
+			</view>
+		</scroll-view>
+	</view>
+
+	<form bindsubmit="SendInfo">
+		<view class="cu-bar foot input {{InputBottom!=0?'cur':''}}" style="bottom:{{InputBottom}}px">
+			<view class="action">
+				<text class="cuIcon-sound text-grey"></text>
+			</view>
+			<input class="solid-bottom bg-gray round" style="padding-left: 20rpx;" name="NewInfo" value="{{NewInfo}}" bindinput="BindNewInfoChange" bindfocus="InputFocus" bindblur="InputBlur" adjust-position="{{false}}" focus="{{false}}" maxlength="300" cursor-spacing="10"></input>
+			<view class="action">
+				<text class="cuIcon-emojifill text-grey"></text>
+			</view>
+			<button wx-if="{{NewInfo==''}}" class="cu-btn bg-grey shadow">发送</button>
+			<button wx-if="{{NewInfo!=''}}" class="cu-btn bg-blue shadow" form-type="submit">发送</button>
+		</view>
+	</form>
+</block>
+
+<view id="footBar" class="foot margin-top shadow" wx-if="{{selection=='0'||selection=='1'}}">
+	<view class="flex solid-bottom bg-white" style="padding: 30rpx 30rpx 10rpx 30rpx">
+		<view style="width:50%; align-items: center" class="flex justify-start">
+			<text class="cuIcon-appreciatefill lg text-gray" bindtap="SupportTeamA" wx-if="{{IsTeamABeenSupported}}"></text>
+			<text class="cuIcon-appreciatefill lg text-blue"  wx-if="{{!IsTeamABeenSupported}}"></text>
+			<view style="padding: 0 0 0 10rpx" class="bg-white margin-xs radius">{{TeamASupport}}</view>
+		</view>
+		<view style="width:50%;align-items: center" class="flex justify-end ">
+			<view style="padding: 0 10rpx 0 0rpx" class="bg-white margin-xs radius">{{TeamBSupport}}</view>
+			<text class="cuIcon-appreciatefill lg text-gray" bindtap="SupportTeamB" wx-if="{{IsTeamBBeenSupported}}"></text>
+			<text class="cuIcon-appreciatefill lg text-blue"  wx-if="{{!IsTeamBBeenSupported}}"></text>
+		</view>
+	</view>
+	<view class="bg-white" style="padding: 10rpx 30rpx 30rpx 30rpx">
+		<view class="cu-progress round sm striped active">
+			<view class="bg-cyan" style="width:{{TeamARate}}%"></view>
+			<view class="bg-purple" style="width:{{TeamBRate}}%"></view>
+		</view>
+	</view>
+</view>
+
+<!--------------------------授权弹窗---------------------------------->
+<view class="cu-modal show" wx-if="{{IsLogin}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">授权</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="padding-xl">
+       需要登录，请求获取你的用户信息
+		</view>
+		<view class="cu-bar bg-white justify-end">
+			<view class="action">
+				<button class="cu-btn line-blue text-blue" bindtap="hideModal">取消</button>
+				<button class="cu-btn bg-blue margin-left" bindgetuserinfo="getUserInfo" open-type="getUserInfo">确定</button>
+			</view>
+		</view>
+	</view>
+</view>

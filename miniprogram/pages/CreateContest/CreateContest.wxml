@@ -1,0 +1,113 @@
+<!--miniprogram/pages/CreateContest/CreateContest.wxml-->
+<view class="headNavi">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+	<view class="cu-bar bg-blue">
+		<view class="action" bindtap="returnType">
+			<text class="cuIcon-back text-white"></text>返回
+		</view>
+		<view class="content text-bold">
+			发布赛事
+		</view>
+	</view>
+</view>
+<view class="box">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+	<view class="cu-bar bg-blue"></view>
+	<view class="cu-card case">
+		<view class="cu-item shadow">
+			<view class="cu-bar bg-white">
+				<view class="action sub-title">
+					<text class="text-xxl text-bold text-blue">请填写赛事信息</text>
+					<text class="bg-blue" style="width:8rem"></text>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+
+<form bindsubmit="FormSubmit">
+	<view class="cu-card case">
+		<view class="cu-item shadow" style="margin-top: 0;">
+			<view class="cu-form-group">
+				<view class="title">赛事名称</view>
+				<input name="ContestName" class="detailText" placeholder-class="phcolor" placeholder="Contest Name" value="{{ContestName}}" bindinput="BindContestNameChange"></input>
+				<text class="cuIcon-title text-blue"></text>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">赛事地点</view>
+				<input name="ContestPlace" class="detailText" placeholder-class="phcolor" placeholder="请尽可能完整精准,此地点涉及定位" value="{{ContestPlace}}" bindinput="BindContestPlaceChange"></input>
+				<text class="cuIcon-title text-blue"></text>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">主办单位</view>
+				<input name="HoldOrganization" class="detailText" placeholder-class="phcolor" placeholder="Organizer" value="{{HoldOrganization}}" bindinput="BindOrganizationChange"></input>
+				<text class="cuIcon-title text-blue"></text>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">赛事类型</view>
+				<view class="cu-tag bg-blue light lg round">{{ContestType}}</view>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">赛事标签(多个标签间请用逗号分隔)</view>
+			</view>
+			<view class="cu-form-group">
+				<input name="ContestTag" class="detailText" placeholder-class="phcolor" placeholder="例：羽毛球比赛,浙大羽协,社团纳新" value="{{ContestTag}}" bindinput="BindContestTagChange"></input>
+			</view>
+		</view>
+	</view>
+	<view class="cu-card case">
+		<view class="cu-item shadow" style="margin-top: 0;">
+			<view class="cu-form-group">
+				<view class="title">赛事开始时间</view>
+				<picker name="date1" mode="date" value="{{StartDate}}" start="{{Today}}" end="{{DateBorder}}" bindchange="BindStartDateChange">
+					<view>{{StartDate}}</view>
+				</picker>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">赛事预计结束时间</view>
+				<picker name="date2" mode="date" value="{{EndDate}}" start="{{Today}}" end="{{DateBorder}}" bindchange="BindEndDateChange">
+					<view>{{EndDate}}</view>
+				</picker>
+			</view>
+		</view>
+	</view>
+	<view class="cu-card case">
+		<view class="cu-item shadow" style="margin-top: 0;">
+			<view class="cu-form-group align-start">
+				<view class="title">赛事介绍</view>
+				<textarea name="ContestDescription" class="detailText" placeholder-class="phcolor" placeholder="Contest Detail" value="{{ContestDescription}}"></textarea>
+			</view>
+		</view>
+	</view>
+
+	<view class="cu-card case">
+		<view class="cu-item shadow" style="margin-top: 0;">
+			<view class="cu-bar bg-white">
+				<view class="action">
+					赛事宣传照片上传（可选）
+				</view>
+				<view class="action">
+					{{Images.length}}/4
+				</view>
+			</view>
+			<view class="cu-form-group margin-bottom">
+				<view class="grid col-4 grid-square flex-sub">
+					<view class="bg-img" wx:for="{{Images}}" wx:key="{{index}}" bindtap="HandleImagePreview" data-url="{{Images[index]}}">
+						<image src='{{Images[index]}}' mode='aspectFill'></image>
+						<view class="cu-tag bg-red" catchtap="RemoveImage" data-index="{{index}}">
+							<text class="cuIcon-close"></text>
+						</view>
+					</view>
+					<view class="solids" bindtap="chooseImage" wx:if="{{Images.length<4}}">
+						<text class="cuIcon-cameraadd"></text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+
+	<view class="padding-lr padding-bottom flex flex-direction">
+		<button class="bt cu-btn bg-blue margin-tb-sm lg" form-type="submit">发布赛事</button>
+	</view>
+</form>

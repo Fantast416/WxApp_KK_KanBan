@@ -1,0 +1,59 @@
+<!--miniprogram/pages/SearchAccurateContest/SearchAccurateContest.wxml-->
+<view class="headNavi">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+	<view class="cu-bar bg-blue">
+		<view class="action" bindtap="returnHome">
+			<text class="cuIcon-back text-white"></text>返回
+		</view>
+		<view class="content text-bold">
+			搜索结果
+		</view>
+	</view>
+</view>
+<view style="height: {{statusBarHeight}}px"></view>
+<view class="cu-bar"></view>
+
+<view style="height:"></view>
+<view class="cu-bar search bg-white">
+	<view class="search-form round">
+		<text class="cuIcon-search"></text>
+		<form bindsubmit="SearchContest">
+			<input value="{{SearchContestName}}" type="text" placeholder="搜索赛事" confirm-type="search"  bindinput="BindSearchContestNameChange"></input>
+		</form>
+	</view>
+	<view class="action">
+		<button class="cu-btn bg-blue shadow-blur round" bindtap="SearchContest">搜索</button>
+	</view>
+</view>
+
+<view wx:for="{{ContestInfo}}" wx:key="_id" wx:for-item="item" wx:for-index="index" class="cu-card article">
+	<view class="cu-item shadow" style="margin-bottom: 0;">
+		<view style="font-size: 36rpx; font-weight: bold; margin: 16rpx; margin-left: 32rpx;">
+			<view class="text-cut">{{item.ContestName}}</view>
+		</view>
+		<view class="content">
+			<image src="{{item.FileId[0]}}" mode="aspectFill"></image>
+			<view class="desc">
+				<view class="text-content" bindtap="GotoContestLevel2" data-id="{{item}}">
+					<view>比赛地点:{{item.ContestPlace}}</view>
+					<view>开始时间:{{item.StartDate}}</view>
+					<view>结束时间:{{item.EndDate}}</view>
+				</view>
+				<view style="display: flex; flex-direction: row; justify-content: space-between;">
+					<view class="cu-tag bg-blue light sm round">{{item.ContestType}}</view>
+					<view bindtap="LoveContest" data-id="{{item}}" data-index="{{index}}" wx-if="{{item.Type=='NotLove'}}">
+						<text class="cuIcon-like lg text-gray"></text>
+						<text>收藏</text>
+					</view>
+					<view bindtap="DeleteLoveContest" data-id="{{item}}" wx-if="{{item.Type=='Love'}}">
+						<text class="cuIcon-likefill lg text-gray"></text>
+						<text>取消收藏</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+<view class="blank" wx:if="{{!flag}}">
+  <text style="font-size:40rpx;">暂无相关比赛哟</text>
+</view>

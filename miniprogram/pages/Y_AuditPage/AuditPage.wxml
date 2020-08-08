@@ -1,0 +1,107 @@
+<!--miniprogram/pages/AuditPage/AuditPage.wxml-->
+<text class="bg" wx-if="{{Status==0}}">赛事正在审核，请耐心等待</text>
+<view wx-if="{{Status==1}}" class="cu-card case">
+<view class="cu-item shadow" style="margin-top: 20rpx;">
+	<view class="cu-form-group">
+		<view class="title">拒绝理由：</view>
+		<text class="detailText">{{Reason}}</text>
+	</view>
+	<view class="cu-form-group" bindtap="GotoContestRule">
+		<view class="detailText">请依据整改意见进行信息或图片的更新,详细细则见活动审查规则，点我进入查看</view>
+	</view>
+	</view>
+</view>
+<view style="height:30rpx;"></view>
+<form bindsubmit="UpdateContestInfo" wx-if="{{Status==1}}">
+	<view class="cu-card case">
+		<view class="cu-item shadow" style="margin-top: 0;">
+			<view class="cu-form-group">
+				<view class="title">赛事名称</view>
+				<input name="ContestName" class="detailText" placeholder-class="phcolor" placeholder="Contest Name" value="{{ContestName}}" bindchange="BindContestNameChange"></input>
+				<text class="cuIcon-title text-blue"></text>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">赛事地点</view>
+				<input name="ContestPlace" class="detailText" placeholder-class="phcolor" placeholder="Contest Place" value="{{ContestPlace}}" bindchange="BindContestPlaceChange"></input>
+				<text class="cuIcon-title text-blue"></text>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">主办单位</view>
+				<input name="HoldOrganization" class="detailText" placeholder-class="phcolor" placeholder="Organizer" value="{{HoldOrganization}}" bindchange="BindOrganizationChange"></input>
+				<text class="cuIcon-title text-blue"></text>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">赛事类型</view>
+				<view class="cu-tag bg-blue light lg round">{{ContestType}}</view>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">赛事标签(多个标签间请用逗号分隔)</view>
+			</view>
+			<view class="cu-form-group">
+				<input name="ContestTag" class="detailText" placeholder-class="phcolor" placeholder="例：羽毛球比赛,浙大羽协,社团纳新" value="{{ContestTag}}" bindinput="BindContestTagChange"></input>
+			</view>
+			<view style="display: flex; flex-direction: row; justify-content: space-even;">
+				<view wx:for="{{ContestTag}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+					<view class="cu-tag bg-blue light sm round" style="margin-left:20rpx;">{{item}}</view>
+				</view>
+			</view>
+
+		</view>
+	</view>
+	<view class="cu-card case">
+		<view class="cu-item shadow" style="margin-top: 0;">
+			<view class="cu-form-group">
+				<view class="title">赛事开始时间</view>
+				<picker name="date" mode="date" value="{{StartDate}}" start="{{Today}}" end="{{DateBorder}}" bindchange="BindStartDateChange">
+					<view>{{StartDate}}</view>
+				</picker>
+			</view>
+			<view class="cu-form-group">
+				<view class="title">赛事预计结束时间</view>
+				<picker name="date" mode="date" value="{{EndDate}}" start="{{Today}}" end="{{DateBorder}}" bindchange="BindEndDateChange">
+					<view>{{EndDate}}</view>
+				</picker>
+			</view>
+		</view>
+	</view>
+	<view class="cu-card case">
+		<view class="cu-item shadow" style="margin-top: 0;">
+			<view class="cu-form-group align-start">
+				<view class="title">赛事介绍</view>
+				<textarea name="ContestDescription" class="detailText" placeholder-class="phcolor" placeholder="Contest Detail" value="{{ContestDescription}}" bindinput="BindContestDescriptionChange"></textarea>
+			</view>
+		</view>
+	</view>
+
+	<view class="padding-lr padding-bottom flex flex-direction">
+		<button class="bt cu-btn bg-gradual-blue margin-tb-sm lg" form-type="submit">更新信息</button>
+	</view>
+	<view class="cu-card case">
+		<view class="cu-item shadow" style="margin-top: 0;">
+			<view class="cu-bar bg-white">
+				<view class="action">
+					重新选择赛事宣传图片（可选）
+				</view>
+				<view class="action">
+					{{NewFileId.length}}/4
+				</view>
+			</view>
+			<view class="cu-form-group margin-bottom">
+				<view class="grid col-4 grid-square flex-sub">
+					<view class="bg-img" wx:for="{{NewFileId}}" wx:key="_id" wx:for-item="item">
+						<image src='{{item}}' data-index="{{index}}" bindtap="handleImagePreview" mode='aspectFill'></image>
+						<view class="cu-tag bg-red" catchtap="RemoveImage" data-index="{{index}}">
+							<text class="cuIcon-close"></text>
+						</view>
+					</view>
+					<view class="solids" bindtap="chooseImage" wx:if="{{NewFileId.length<4}}">
+						<text class="cuIcon-cameraadd"></text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="padding-lr padding-bottom flex flex-direction">
+		<button class="bt cu-btn bg-gradual-blue margin-tb-sm lg" bindtap="uploadImage">上传图片</button>
+	</view>
+</form>

@@ -1,0 +1,29 @@
+/* miniprogram/pages/ChooseContestType/ChooseContestType.wxss */
+.headNavi {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+.Wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 32rpx;
+  margin-bottom: 24rpx;
+  margin-top: 12rpx;
+}
+
+.ImgCover {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 0rpx;
+  margin-bottom: 24rpx;
+}
+.ButtomBar {
+  position: fixed;
+  width: 100%;
+  bottom: 0rpx;
+  z-index: 999;
+}

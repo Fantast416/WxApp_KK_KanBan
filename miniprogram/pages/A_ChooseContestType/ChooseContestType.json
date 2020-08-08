@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "MainBar": "../../components/MainBar/MainBar"
+  },
+  "backgroundColor": "#0081ff"
+}

@@ -1,0 +1,277 @@
+<!--miniprogram/pages/User/User.wxml-->
+<view class="headNavi">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+	<view class="cu-bar bg-blue">
+		<image src="../../images/logowithwords.png" class="logoimage"></image>
+		<view class="content text-bold">
+			我的
+		</view>
+	</view>
+</view>
+<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+<view class="cu-bar bg-blue"></view>
+<view class="info-container">
+	<block wx:if="{{!hasUserInfo && canIUse}}">
+		<!--block wx:if="0"-->
+		<view class="avater">
+			<!--image class="avater-bg" style="background-image: url({{unlogin_base64}})"></image-->
+			<image class="avater-bg" src="../../images/nonepeople.jpg"></image>
+		</view>
+		<view class="userInfo">
+			<button class="cu-btn bg-grey shadow-blur round" style="margin:36rpx 0 0rpx 30rpx;"  bindgetuserinfo="getUserInfo" open-type="getUserInfo">点击获取头像 </button>
+			<view class="no-statues">
+				<view class="cu-tag bg-gray light sm round" style="font-size:25rpx; padding:0 20rpx; height:40rpx">未登录</view>
+				<view class="cu-tag bg-gray light sm round" style="font-size:25rpx; padding:0 20rpx; height:40rpx">未认证</view>
+			</view>
+		</view>
+	</block>
+	<block wx:else>
+		<view class="avater">
+			<image style="background-image: url({{userInfo.avatarUrl}})"></image>
+		</view>
+		<view class="userInfo bg-blue">
+			<view class="nickname" bindtap="getUserInfo">{{userInfo.nickName}}</view>
+			<view class="statues" style="margin-top: 10rpx;">
+				<view class="cu-tag bg-blue light sm round" style="font-size:25rpx; padding:0 20rpx; height:40rpx">已登录</view>
+				<view class="cu-tag bg-yellow light sm round" style="font-size:25rpx; padding:0 20rpx; height:40rpx;">已认证</view>
+			</view>
+		</view>
+		<view class="AdminBtn" style="margin-top: 0rpx; margin-left: 128rpx;">
+			<button class="cu-btn sm bg-white" style="font-size:25rpx; margin-top: 20rpx; padding:0 20rpx; height:40rpx" bindtap="showModal" data-target="DialogModal2">比赛认证</button>
+			<button wx-if="{{IsProgramAdmin}}" style="font-size:25rpx; margin-top: 20rpx; padding:0 20rpx; height:40rpx" class="cu-btn sm bg-white" bindtap="GotoProgramAdmin">审核活动</button>
+			<view wx-if="{{IsProgramAdmin}}" style="text-align: left; margin-top: 10rpx;">
+				<text>(待审{{NeedAuditLen}})</text>
+			</view>
+		</view>
+	</block>
+</view>
+
+<!--view class="flex-bar main">
+	<view class="flex-bar-in">
+		<view wx-if="{{_style1}}" bindtap="changeChoice1" class="li nav-item shadowProjector">
+			<view class="a">我的赛事</view>
+		</view>
+		<view wx-if="{{!_style1}}" bindtap="changeChoice1" class="li nav-item">
+			<view class="a">我的赛事</view>
+		</view>
+		<view wx-if="{{_style2}}" bindtap="changeChoice2" class="li nav-item shadowProjector">
+			<view class="a">参与赛事</view>
+		</view>
+		<view wx-if="{{!_style2}}" bindtap="changeChoice2" class="li nav-item">
+			<view class="a">参与赛事</view>
+		</view>
+		<view wx-if="{{_style3}}" bindtap="changeChoice3" class="li nav-item shadowProjector">
+			<view class="a">我的收藏</view>
+		</view>
+		<view wx-if="{{!_style3}}" bindtap="changeChoice3" class="li nav-item">
+			<view class="a">我的收藏</view>
+		</view>
+	</view>
+</view-->
+
+<view class="flex-bar main" id="selectBar">
+	<view class="flex-bar-in">
+		<view bindtap="changeChoice1" data-index='0' class="li nav-item {{_style1?'bar-bottom':''}}">
+			<view class="a">我的赛事</view>
+		</view>
+		<view bindtap="changeChoice2" data-index='1' class="li nav-item {{_style2?'bar-bottom':''}}">
+			<view class="a">参与赛事</view>
+		</view>
+		<view bindtap="changeChoice3" data-index='2' class="li nav-item {{_style3?'bar-bottom':''}}">
+			<view class="a">我的收藏</view>
+		</view>
+	</view>
+</view>
+
+<scroll-view scroll-y bindscrolltoupper="upper" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower">
+	<block wx:if="{{_choice1}}">
+		<view wx:for="{{MyAdminContest}}" wx:key="_id" wx:for-item="item" wx:for-index="index" class="cu-card article">
+			<view class="cardItem bg-white" style="margin-bottom: 0;">
+				<view>
+					<image class="cardimg" src="{{item.FileId[0]}}" mode="aspectFill"></image>
+				</view>
+				<view class="cardimg-overlay"></view>
+				<view class="padding" style="font-size: 36rpx; font-weight: bold; position:absolute;">
+					<view class="text-cut">
+						<view class="cu-tag bg-red light sm round" wx-if="{{item.ApprovalStatus==-1}}">审核不通过</view>
+						<view class="cu-tag bg-orange light sm round" wx-if="{{item.ApprovalStatus==0}}">正在审核</view>
+						<view class="cu-tag bg-blue light sm round" wx-if="{{item.ApprovalStatus==1}}">审核通过</view>
+						{{item.ContestName}}
+					</view>
+				</view>
+				<view style="height:100rpx;"></view>
+				<view style="display: flex; flex-direction: row; justify-content: space-even;">
+					<view class="margin-left">
+						<view class="cu-tag bg-blue light sm round">{{item.ContestType}}</view>
+					</view>
+					<view wx:for="{{item.ContestTag}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+						<view class="cu-tag bg-blue light sm round" style="margin-left:20rpx;" wx-if="{{item!=''}}">{{item}}</view>
+					</view>
+				</view>
+				<view class="content" style="position: absolute;">
+					<view class="desc" style="margin-top: 20rpx; width: 85vw;">
+						<view class="text-content" bindtap="GotoAdminContest" data-id="{{item}}">
+							<view><text class="cuIcon-time margin-right margin-left"></text>{{item.StartDate}} ~ {{item.EndDate}}</view>
+							<view><text class="cuIcon-location margin-right margin-left"></text>{{item.ContestPlace}}|{{item.Distance}}</view>
+							<view><text class="cuIcon-friend margin-right margin-left"></text>{{item.ScanNum}}</view>
+						</view>
+						<view style="position: absolute; margin-top: 10rpx;">
+							<image class="margin-right" src="../../images/nonepeople.jpg" style="margin-left: 32rpx; height: 48rpx; width: 48rpx; border-radius: 24rpx;"></image>
+							<text>{{item.HoldOrganization}}</text>
+						</view>
+						<view style="position: absolute; right: 0; z-index: 100;">
+							<view bindtap="LoveContest" style="margin-top: 32rpx;" data-id="{{item}}" data-index="{{index}}" wx-if="{{item.Type=='NotLove'}}">
+								<text class="cuIcon-like lg text-gray margin-right"></text>
+								<text>收藏</text>
+							</view>
+							<view bindtap="DeleteLoveContest" style="margin-top: 32rpx;" data-id="{{item}}" data-index="{{index}}" wx-if="{{item.Type=='Love'}}">
+								<text class="cuIcon-likefill lg text-gray margin-right"></text>
+								<text>取消收藏</text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</block>
+	<block wx:elif="{{_choice2}}">
+	<view wx:for="{{MyRefereeContest}}" wx:key="_id" wx:for-item="item" wx:for-index="index" class="cu-card article">
+			<view class="cardItem bg-white" style="margin-bottom: 0;">
+				<view>
+					<image class="cardimg" src="{{item.FileId[0]}}" mode="aspectFill"></image>
+				</view>
+				<view class="cardimg-overlay"></view>
+				<view class="padding" style="font-size: 36rpx; font-weight: bold; position:absolute;">
+					<view class="text-cut">
+						{{item.ContestName}}
+					</view>
+				</view>
+				<view style="height:100rpx;"></view>
+				<view style="display: flex; flex-direction: row; justify-content: space-even;">
+					<view class="margin-left">
+						<view class="cu-tag bg-blue light sm round">{{item.ContestType}}</view>
+					</view>
+					<view wx:for="{{item.ContestTag}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+						<view class="cu-tag bg-blue light sm round" style="margin-left:20rpx;" wx-if="{{item!=''}}">{{item}}</view>
+					</view>
+				</view>
+				<view class="content" style="position: absolute;">
+					<view class="desc" style="margin-top: 20rpx; width: 85vw;">
+						<view class="text-content" bindtap="GotoAdminContest" data-id="{{item}}">
+							<view><text class="cuIcon-time margin-right margin-left"></text>{{item.StartDate}} ~ {{item.EndDate}}</view>
+							<view><text class="cuIcon-location margin-right margin-left"></text>{{item.ContestPlace}}|{{item.Distance}}</view>
+							<view><text class="cuIcon-friend margin-right margin-left"></text>{{item.ScanNum}}</view>
+						</view>
+						<view style="position: absolute; margin-top: 10rpx;">
+							<image class="margin-right" src="../../images/nonepeople.jpg" style="margin-left: 32rpx; height: 48rpx; width: 48rpx; border-radius: 24rpx;"></image>
+							<text>{{item.HoldOrganization}}</text>
+						</view>
+						<view style="position: absolute; right: 0; z-index: 100;">
+							<view bindtap="LoveContest" style="margin-top: 32rpx;" data-id="{{item}}" data-index="{{index}}" wx-if="{{item.Type=='NotLove'}}">
+								<text class="cuIcon-like lg text-gray margin-right"></text>
+								<text>收藏</text>
+							</view>
+							<view bindtap="DeleteLoveContest" style="margin-top: 32rpx;" data-id="{{item}}" data-index="{{index}}" wx-if="{{item.Type=='Love'}}">
+								<text class="cuIcon-likefill lg text-gray margin-right"></text>
+								<text>取消收藏</text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</block>
+	<block wx:else="{{_choice3}}">
+	<view wx:for="{{MyLoveContest}}" wx:key="_id" wx:for-item="item" wx:for-index="index" class="cu-card article">
+			<view class="cardItem bg-white" style="margin-bottom: 0;">
+				<view>
+					<image class="cardimg" src="{{item.FileId[0]}}" mode="aspectFill"></image>
+				</view>
+				<view class="cardimg-overlay"></view>
+				<view class="padding" style="font-size: 36rpx; font-weight: bold; position:absolute;">
+					<view class="text-cut">
+						{{item.ContestName}}
+					</view>
+				</view>
+				<view style="height:100rpx;"></view>
+				<view style="display: flex; flex-direction: row; justify-content: space-even;">
+					<view class="margin-left">
+						<view class="cu-tag bg-blue light sm round">{{item.ContestType}}</view>
+					</view>
+					<view wx:for="{{item.ContestTag}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+						<view class="cu-tag bg-blue light sm round" style="margin-left:20rpx;" wx-if="{{item!=''}}">{{item}}</view>
+					</view>
+				</view>
+				<view class="content" style="position: absolute;">
+					<view class="desc" style="margin-top: 20rpx; width: 85vw;">
+						<view class="text-content" bindtap="GotoAdminContest" data-id="{{item}}">
+							<view><text class="cuIcon-time margin-right margin-left"></text>{{item.StartDate}} ~ {{item.EndDate}}</view>
+							<view><text class="cuIcon-location margin-right margin-left"></text>{{item.ContestPlace}}|{{item.Distance}}</view>
+							<view><text class="cuIcon-friend margin-right margin-left"></text>{{item.ScanNum}}</view>
+						</view>
+						<view style="position: absolute; margin-top: 10rpx;">
+							<image class="margin-right" src="../../images/nonepeople.jpg" style="margin-left: 32rpx; height: 48rpx; width: 48rpx; border-radius: 24rpx;"></image>
+							<text>{{item.HoldOrganization}}</text>
+						</view>
+						<view style="position: absolute; right: 0; z-index: 100;">
+							<view bindtap="LoveContest" style="margin-top: 32rpx;" data-id="{{item}}" data-index="{{index}}" wx-if="{{item.Type=='NotLove'}}">
+								<text class="cuIcon-like lg text-gray margin-right"></text>
+								<text>收藏</text>
+							</view>
+							<view bindtap="DeleteLoveContest" style="margin-top: 32rpx;" data-id="{{item}}" data-index="{{index}}" wx-if="{{item.Type=='Love'}}">
+								<text class="cuIcon-likefill lg text-gray margin-right"></text>
+								<text>取消收藏</text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</block>
+</scroll-view>
+<view style="height: 150rpx"></view>
+<view class="ButtomBar">
+	<MainBar id="MainBar" />
+</view>
+
+<!--------------------------第一个对话框弹出---------------------------------->
+<view class="cu-modal {{modalName=='DialogModal2'?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">比赛认证</view>
+			<view class="action" bindtap="hideModal1">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="padding-xl">
+			请选择认证方式
+		</view>
+		<view class="cu-bar bg-white">
+			<view class="action margin-0 flex-sub text-blue solid-left" bindtap="showModal2">字符码认证</view>
+			<view class="action margin-0 flex-sub  solid-left" bindtap="IdentifyQrcode">二维码认证</view>
+		</view>
+	</view>
+</view>
+
+<!--------------------------字符串认证码窗口---------------------------------->
+<view class="cu-modal {{StrIdentify?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">请输入字符串认证码</view>
+			<view class="action" bindtap="hideModal2">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="padding-xl">
+			<form bindsubmit="ConfirmModal2">
+				<input class="bg-white" name="Str" placeholder="认证码" value="{{Str}}" bindchange="BindChangeIndentifyStr"></input>
+				<view class="cu-bar justify-end">
+					<view class="action">
+						<button class="cu-btn line-blue text-blue" bindtap="hideModal2">取消</button>
+						<button class="cu-btn bg-blue margin-left" form-type="submit">确定</button>
+					</view>
+				</view>
+			</form>
+		</view>
+	</view>
+</view>

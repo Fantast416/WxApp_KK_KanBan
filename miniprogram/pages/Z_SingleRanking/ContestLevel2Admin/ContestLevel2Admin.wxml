@@ -1,0 +1,390 @@
+<!--miniprogram/pages/ContestLevel2Admin/ContestLevel2Admin.wxml-->
+<image src="../../images/greybg.png" class="bg"></image>
+<view class='cu-load load-modal' wx:if="{{loadModal}}">
+  <image src='../../../images/jumpwait.gif' class='png' mode='aspectFit'></image>
+  <view class='gray-text'>加载中...</view>
+</view>
+<view class="headNavi">
+	<view class="bg-blue" style="height: {{statusBarHeight}}px"></view>
+	<view class="cu-bar bg-blue">
+		<view class="action" bindtap="returnHome">
+			<text class="cuIcon-back text-white"></text>返回
+		</view>
+		<view class="content text-bold">
+			赛事详情
+		</view>
+	</view>
+</view>
+
+<canvas canvas-id="canvas1" class="hidcanvas"></canvas>
+<canvas canvas-id="canvas2" class="hidcanvas"></canvas>
+
+<view style="height: {{statusBarHeight}}px"></view>
+<view class="cu-bar"></view>
+<!--view wx:if="{{selection=='4'}}">
+	<swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500" bindchange="cardSwiper" indicator-color="#8799a3" indicator-active-color="#0081ff">
+		<swiper-item wx:for="{{FileId}}" wx:key="_id" wx:for-item="item" wx:for-index="index" class="{{cardCur==index?'cur':''}}">
+			<image src="{{item}}" data-index="{{index}}" bindtap="handleImagePreview" mode="aspectFill"></image>
+		</swiper-item>
+	</swiper>
+</view-->
+<scroll-view scroll-x class="bg-white nav">
+	<view class="flex text-center">
+		<view class="cu-item flex-sub {{selection=='0'?'text-blue cur':''}}" bindtap="switchTab" data-index='0'>
+			比赛管理
+		</view>
+		<view class="cu-item flex-sub {{selection=='1'?'text-blue cur':''}}" bindtap="switchTab" data-index='1'>
+			选手管理
+		</view>
+		<view class="cu-item flex-sub {{selection=='2'?'text-blue cur':''}}" bindtap="switchTab" data-index='2'>
+			赛事信息
+		</view>
+		<view wx-if="{{Authority=='Admin'}}" class="cu-item flex-sub {{selection=='3'?'text-blue cur':''}}" bindtap="switchTab" data-index='3'>
+			权限管理
+		</view>
+	</view>
+</scroll-view>
+
+<!---------------------比赛管理-------------------------------->
+<view wx:if="{{selection=='0'}}">
+	<view class="flex flex-direction padding">
+		<button class="cu-btn bg-blue lg shadow" wx-if="{{Authority=='Admin'}}" bindtap="showModal">添加比赛</button>
+	</view>
+	<view class="blank" wx:if="{{MatchInfo.length==0}}">
+		<text>本赛事还未有比赛哟</text>
+	</view>
+	<view class="check-item cu-card article" wx:for="{{MatchInfo}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+		<view class="cu-item shadow" style="margin-top: 0; padding-bottom: 0;">
+			<view class="flex justify-between" style="margin: 16rpx; margin-left: 32rpx; margin-bottom: 0rpx;">
+				<view>
+					<text>{{item.MatchName}} | {{item.MatchPlace}}</text>
+					<text style="margin-left: 24rpx;" wx:if="{{item.Status=='0'}}">正在进行</text>
+					<text wx:if="{{item.Status=='0'}}" class="cuIcon-playfill text-red"></text>
+					<text style="margin-left: 24rpx;" wx:if="{{item.Status=='-1'}}">即将进行</text>
+					<text wx:if="{{item.Status=='-1'}}" class="cuIcon-icloading text-blue"></text>
+					<text style="margin-left: 24rpx;" wx:if="{{item.Status=='1'}}">已经结束</text>
+					<text wx:if="{{item.Status=='1'}}" class="cuIcon-title text-gray"></text>
+					<text style="margin-left: 24rpx;" wx:if="{{item.Status=='2'}}">暂停中</text>
+					<text wx:if="{{item.Status=='2'}}" class="cuIcon-stop text-red"></text>
+				</view>
+				<button class="cu-btn round bg-red sm shadow" wx-if="{{Authority=='Admin'}}" bindtap="DeleteMatch" data-id="{{item.MatchId}}">删除比赛</button>
+			</view>
+			<view class="content" bindtap="GotoContestLevel3Admin" data-id="{{item}}">
+				<view class="flex margin-bottom-sm margin-left-sm">
+					<view class="flex-twice margin-xs radius">
+						<view class="text-grey margin-bottom-sm"><text class="cuIcon-people margin-right-sm"></text>{{item.CurrentMemberInfo.MemberName}}</view>
+						<view class="text-grey margin-bottom-sm"><text class="cuIcon-voice margin-right-sm"></text>{{item.CurrentMemberInfo.MemberTag}}</view>
+						<view class="text-grey"><text class="cuIcon-new margin-right-sm"></text>{{item.CurrentMemberInfo.MemberDescription}}</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+<!---------------------选手管理-------------------------------->
+<view hidden="{{MemberHidden}}">
+	<view class="cu-bar search bg-white" style="z-index: 999;">
+		<view class="search-form round">
+			<text class="cuIcon-search"></text>
+			<form>
+				<input value="{{SearchName}}" type="text" placeholder="搜索选手" confirm-type="search" bindchange="BindSearchNameChange"></input>
+			</form>
+		</view>
+		<view class="action">
+			<button class="cu-btn bg-blue shadow-blur round" bindtap="SearchMember">搜索</button>
+		</view>
+	</view>
+	<view class="flex flex-direction padding">
+		<button class="cu-btn bg-blue lg shadow" wx-if="{{Authority=='Admin'}}" bindtap="AddMemberExcel">批量添加成员</button>
+	</view>
+	<view class="flex flex-direction padding">
+		<button class="cu-btn bg-blue lg shadow" wx-if="{{Authority=='Admin'}}" bindtap="showModalMember">添加选手</button>
+	</view>
+	<view class="blank" wx:if="{{ContestMember.length==0}}">
+		<text>本赛事还未任何选手哟</text>
+	</view>
+	<scroll-view scroll-y class="indexes" scroll-into-view="indexes-{{listCurID}}" style="height:calc(60vh - {{barTop}}px)" scroll-with-animation="true" enable-back-to-top="true">
+		<block wx:for="{{list}}" wx:key="list">
+			<view class="padding indexItem-{{list[index]}}" id="indexes-{{list[index]}}" data-index="{{list[index]}}">{{list[index]}}</view>
+			<view class="no-padding">
+				<view class="check-item cu-card article" wx:for="{{ContestMember}}" wx:key="ContestMember" wx:for-index="sub" style="margin-top: 0; padding-bottom: 0;">
+					<view class="cu-list menu-avatar" wx:if="{{Index[sub]==list[index]}}">
+						<view class="cu-item" style="padding-right: 64rpx;">
+							<view class="cu-avatar bg-blue round lg"><text class="cuIcon-people text-white"></text></view>
+							<view class="content">
+								<text class="text-cut" style="font-size: 32rpx; font-weight: bold;">{{item.MemberName}}</text>
+								<view>
+									<view class="margin-left cu-tag bg-blue light round">{{item.MemberTag}}</view>
+								</view>
+							</view>
+							<button class="cu-btn round bg-red sm shadow margin-right" wx-if="{{Authority=='Admin'}}" bindtap="DeleteMember" data-id="{{sub}}">删除选手</button>
+						</view>
+					</view>
+				</view>
+			</view>
+		</block>
+	</scroll-view>
+	<view class="indexBar" style="height:calc(100vh - {{CustomBar}}px - 50px)">
+		<view class="indexBar-box" bindtouchstart="tStart" bindtouchend="tEnd" catchtouchmove="tMove">
+			<view class="indexBar-item" wx:for="{{list}}" wx:key="index" id="{{index}}" bindtouchstart="getCur" bindtouchend="setCur">{{list[index]}}</view>
+		</view>
+	</view>
+	<!--选择显示-->
+	<view hidden="{{hidden}}" class="indexToast">
+		{{listCur}}
+	</view>
+	<!--view class="check-item cu-card article" wx:for="{{ContestMember}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+		<view class="cu-item shadow" style="margin-top: 0; padding-bottom: 0;">
+			<view class="cu-list menu-avatar">
+				<view class="cu-item">
+					<view class="cu-avatar bg-blue round lg"><text class="cuIcon-people text-white"></text></view>
+					<view class="content">
+						<text class="text-cut" style="font-size: 32rpx; font-weight: bold;">{{item.MemberName}}</text>
+						<view>
+							<view class="margin-left cu-tag bg-blue light round">{{item.MemberTag}}</view>
+						</view>
+					</view>
+					<button class="cu-btn round bg-red sm shadow margin-right" bindtap="DeleteMember" data-id="{{index}}">删除选手</button>
+				</view>
+			</view>
+		</view>
+	</view-->
+</view>
+
+<!---------------------权限认证-------------------------------->
+<view wx:if="{{selection=='3' && Authority=='Admin'}}">
+	<view class="check-item cu-card article">
+		<view class="cu-item shadow padding">
+			<view>
+				<text class="text-blue text-bold text-xl">温馨提示：</text>
+				<text class="text-lg">使用认证码或者二维码可以在</text>
+				<text class="cu-tag bg-gray text-lg round">“我的”页面</text>
+				<text class="text-lg">进行赛事的相关权限认证</text>
+			</view>
+		</view>
+	</view>
+	<view style="width:92%; margin-left:4%; margin-bottom:40rpx; border-radius:10rpx; background-color:white;">
+		<image bindlongtap="DownloadCode" style="width:500rpx;height:500rpx;border-radius:100%;margin-left:95rpx;margin-right:95rpx;" src="{{src}}">
+		</image>
+	</view>
+	<view class="check-item cu-card article">
+		<view class="cu-item shadow padding" style="margin-top: 0;">
+			<view>
+				<text class="text-blue text-bold text-xl">管理员认证码</text>
+			</view>
+			<view class="flex justify-between padding-bottom">
+				<view class="margin-top grid" style="width:300rpx;">
+					<text class="text-grey text-bold text-lg text-cut">{{AdministratorCode}}</text>
+				</view>
+				<button class="cu-btn bg-blue lg shadow" bindtap="CopyAdministratorId">复制认证码</button>
+			</view>
+			<view>
+				<text class="text-blue text-bold text-xl">裁判认证码</text>
+			</view>
+			<view class="flex justify-between padding-bottom">
+				<view class="margin-top grid" style="width:300rpx;">
+					<text class="text-grey text-bold text-lg text-cut">{{RefereeCode}}</text>
+				</view>
+				<button class="cu-btn bg-blue lg shadow" bindtap="CopyRefereeId">复制认证码</button>
+			</view>
+
+			<view class="flex">
+				<view class="flex-sub">
+					<view class="margin-bottom">
+						<text class="cuIcon-qrcode text-grey margin-right" style="font-size: 42rpx;"></text>
+						<text class="text-blue text-bold text-xl">裁判权限码</text>
+					</view>
+					<view class="flex flex-direction padding-right">
+						<button class="cu-btn bg-blue lg shadow margin-bottom " bindtap="CreateRefereeHaiBao">生成</button>
+						<canvas canvas-id="canvasPoster" style="width: 144px; height:192px;" bindlongpress="downloadRefereeQrCode"></canvas>
+						<text wx-if="{{create}}" class="text-blue text-bold text-xl" style="text-align:center">长按图片保存</text>
+					</view>
+				</view>
+				<view class="flex-sub">
+					<view class="margin-bottom">
+						<text class="cuIcon-qrcode text-grey margin-right" style="font-size: 42rpx;"></text>
+						<text class="text-blue text-bold text-xl">管理者权限码</text>
+					</view>
+					<view class="flex flex-direction padding-right">
+						<button class="cu-btn bg-blue lg shadow margin-bottom " bindtap="CreateAdminHaiBao">生成</button>
+						<canvas canvas-id="canvasPoster2" style="width: 144px; height:192px; " bindlongpress="downloadAdministratorQrCode"></canvas>
+						<text wx-if="{{create2}}" class="text-blue text-bold text-xl" style="text-align:center">长按图片保存</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="check-item cu-card article">
+		<view class="cu-item shadow padding" style="margin-top: 0;">
+			<view class="margin-bottom">
+				<text class="text-lg">已认证管理员数量：</text>
+				<text class="margin-left cu-tag bg-blue light round">{{AdministratorNum}}</text>
+			</view>
+			<view>
+				<text class="text-lg">已认证裁判数量：</text>
+				<text class="margin-left cu-tag bg-blue light round">{{RefereeNum}}</text>
+			</view>
+		</view>
+	</view>
+</view>
+
+<!---------------------赛事信息修改-------------------------------->
+<view wx:if="{{selection=='2'}}">
+	<view class="box">
+		<view class="cu-card case">
+			<view class="cu-item shadow">
+				<view class="cu-bar bg-white">
+					<view class="action sub-title">
+						<text class="text-xxl text-bold text-blue">修改赛事信息</text>
+						<text class="bg-blue" style="width:7rem"></text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<form bindsubmit="UpdateContestInfo">
+		<view class="cu-card case">
+			<view class="cu-item shadow" style="margin-top: 0;">
+				<view class="cu-form-group">
+					<view class="title">赛事名称</view>
+					<input name="ContestName" class="detailText" placeholder-class="phcolor" placeholder="Contest Name" value="{{ContestName}}" bindchange="BindContestNameChange"></input>
+					<text class="cuIcon-title text-blue"></text>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">赛事地点</view>
+					<input name="ContestPlace" class="detailText" placeholder-class="phcolor" placeholder="Contest Place" value="{{ContestPlace}}" bindchange="BindContestPlaceChange"></input>
+					<text class="cuIcon-title text-blue"></text>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">主办单位</view>
+					<input name="HoldOrganization" class="detailText" placeholder-class="phcolor" placeholder="Organizer" value="{{HoldOrganization}}" bindchange="BindOrganizationChange"></input>
+					<text class="cuIcon-title text-blue"></text>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">赛事类型</view>
+					<view class="cu-tag bg-blue light lg round">{{ContestType}}</view>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">赛事标签(多个标签间请用逗号分隔)</view>
+				</view>
+								<input name="ContestTag" class="detailText margin-left margin-bottom" placeholder-class="phcolor" placeholder="例：羽毛球比赛,浙大羽协,社团纳新" value="{{ContestTag}}" bindinput="BindContestTagChange"></input>
+				
+				<view class="margin-bottom" style="display: flex; flex-direction: row; justify-content: space-even;">
+					<view wx:for="{{ContestTag}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+						<view class="cu-tag bg-blue light sm round" style="margin-left:20rpx;">{{item}}</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="cu-card case">
+			<view class="cu-item shadow" style="margin-top: 0;">
+				<view class="cu-form-group">
+					<view class="title">赛事开始时间</view>
+					<picker name="date" mode="date" value="{{StartDate}}" start="{{Today}}" end="{{DateBorder}}" bindchange="BindStartDateChange">
+						<view>{{StartDate}}</view>
+					</picker>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">赛事预计结束时间</view>
+					<picker name="date" mode="date" value="{{EndDate}}" start="{{Today}}" end="{{DateBorder}}" bindchange="BindEndDateChange">
+						<view>{{EndDate}}</view>
+					</picker>
+				</view>
+			</view>
+		</view>
+		<view class="cu-card case">
+			<view class="cu-item shadow" style="margin-top: 0;">
+				<view class="cu-form-group align-start">
+					<view class="title">赛事介绍</view>
+					<textarea name="ContestDescription" class="detailText" placeholder-class="phcolor" placeholder="Contest Detail" value="{{ContestDescription}}" bindinput="BindContestDescriptionChange"></textarea>
+				</view>
+			</view>
+		</view>
+		<view class="padding-lr padding-bottom flex flex-direction">
+			<button class="bt cu-btn bg-blue margin-tb-sm lg" form-type="submit" wx-if="{{Authority=='Admin'}}">更新信息</button>
+		</view>
+		<view class="cu-card case">
+			<view class="cu-item shadow" style="margin-top: 0;">
+				<view class="cu-bar bg-white">
+					<view class="action">
+						重新选择赛事宣传图片（可选）
+					</view>
+					<view class="action">
+						{{NewFileId.length}}/4
+					</view>
+				</view>
+				<view class="cu-form-group margin-bottom">
+					<view class="grid col-4 grid-square flex-sub">
+						<view class="bg-img" wx:for="{{NewFileId}}" wx:key="_id" wx:for-item="item">
+							<image src='{{item}}' data-index="{{index}}" bindtap="handleImagePreview" mode='aspectFill'></image>
+							<view class="cu-tag bg-red" catchtap="RemoveImage" data-index="{{index}}">
+								<text class="cuIcon-close"></text>
+							</view>
+						</view>
+						<view class="solids" bindtap="chooseImage" wx:if="{{NewFileId.length<4}}">
+							<text class="cuIcon-cameraadd"></text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="padding-lr padding-bottom flex flex-direction">
+			<button class="bt cu-btn bg-blue margin-tb-sm lg" wx-if="{{Authority=='Admin'}}" bindtap="uploadImage">上传图片</button>
+		</view>
+		<view class="padding-lr padding-bottom flex flex-direction" wx-if="{{Authority=='Referee'}}">
+			<view>裁判无权限更改赛事信息</view>
+		</view>
+	</form>
+</view>
+
+<!--------------------------添加比赛弹窗---------------------------------->
+<view class="cu-modal {{AddLevel2?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">请输入比赛信息</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="padding-xl">
+			<text>比赛名称:</text>
+			<input placeholder="比赛名称" value="{{MatchName}}" bindinput="BindChangeMatchName"></input>
+			<text>比赛场地:</text>
+			<input placeholder="比赛场地" value="{{MatchPlace}}" bindchange="BindChangeMatchPlace"></input>
+		</view>
+		<view class="cu-bar bg-white justify-end">
+			<view class="action">
+				<button class="cu-btn line-blue text-blue" bindtap="hideModal">取消</button>
+				<button class="cu-btn bg-blue margin-left" bindtap="ConfirmAdd">确定</button>
+			</view>
+		</view>
+	</view>
+</view>
+
+
+<!--------------------------添加成员弹窗---------------------------------->
+<view class="cu-modal {{AddMember?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">请输入成员</view>
+			<view class="action" bindtap="hideModalMember">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="padding-xl">
+			<text>成员名称:</text>
+			<input placeholder="成员名称" value="{{MemberName}}" bindinput="BindChangeMemberName"></input>
+			<text>成员描述:</text>
+			<input placeholder="成员描述" value="{{MemberDescription}}" bindinput="BindChangeMemberDescription"></input>
+			<text>成员位置（标签）:</text>
+			<input placeholder="成员标签" value="{{MemberTag}}" bindinput="BindChangeMemberTag"></input>
+		</view>
+		<view class="cu-bar bg-white justify-end">
+			<view class="action">
+				<button class="cu-btn line-blue text-blue" bindtap="hideModalMember">取消</button>
+				<button class="cu-btn bg-blue margin-left" bindtap="ConfirmAddMember">确定</button>
+			</view>
+		</view>
+	</view>
+</view>
